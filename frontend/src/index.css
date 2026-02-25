@@ -1,12 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --primary: #A5B4FC;
+        --primary-dark: #818CF8;
+        --accent: #D1FAE5;
+        --secondary: #BAE6FD;
+        --success-text: #166534;
+        --success-bg: #DCFCE7;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.3);
+    }
+
     body {
-        @apply font-sans text-slate-700 antialiased min-h-screen bg-slate-50 selection:bg-blue-600 selection:text-white;
+        @apply font-['Outfit'] text-slate-700 antialiased min-h-screen bg-slate-50 selection:bg-indigo-600 selection:text-white;
     }
 
     h1,
@@ -15,29 +26,33 @@
     h4,
     h5,
     h6 {
-        @apply font-heading font-semibold text-slate-800;
+        @apply font-['Outfit'] font-bold text-slate-800 tracking-tight;
     }
 }
 
 @layer components {
+    .glass-card {
+        @apply bg-white/70 backdrop-blur-xl border border-white/30 rounded-3xl shadow-2xl shadow-slate-200/50 transition-all duration-300;
+    }
+
     .card {
-        @apply bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300;
+        @apply bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:shadow-slate-200/60 transition-all duration-500;
     }
 
     .input-field {
-        @apply w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all;
+        @apply w-full px-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all duration-300 font-medium;
     }
 
     .label {
-        @apply block text-sm font-medium text-gray-700 mb-1;
+        @apply block text-[13px] font-extrabold text-slate-500 mb-1.5 uppercase tracking-wider ml-1;
     }
 
     .btn-primary {
-        @apply px-6 py-2.5 bg-slate-800 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors duration-300 shadow-sm flex items-center justify-center gap-2;
+        @apply px-6 py-3.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2;
     }
 
     .btn-secondary {
-        @apply px-6 py-2.5 bg-white text-slate-800 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-300 shadow-sm;
+        @apply px-6 py-3.5 bg-white text-slate-800 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 transition-all duration-300 shadow-sm;
     }
 
     .btn-danger {
@@ -50,5 +65,23 @@
 
     .sidebar-link.active {
         @apply bg-blue-600 text-white shadow-md;
+    }
+
+    /* 3D Flip Card Utilities */
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .rotate-y-180 {
+        transform: rotateY(180deg);
     }
 }

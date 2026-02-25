@@ -13,8 +13,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         bloodGroup: existingStudent?.bloodGroup || '',
         gender: existingStudent?.gender || 'Male',
         address: existingStudent?.address || '',
-        emergencyContact: existingStudent?.emergencyContact || '',
-        parentPhone: existingStudent?.parentPhone || '',
+        emergencyContact: existingStudent?.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : '',
+        parentPhone: existingStudent?.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : '',
         officialEmail: existingStudent?.officialEmail || '',
         validUpto: existingStudent?.validUpto || '',
         studentType: existingStudent?.studentType || 'Days Scholar'
@@ -26,7 +26,16 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
     const userInfo = JSON.parse(localStorage.getItem(isStudentView ? 'studentInfo' : 'userInfo'));
 
     const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        let value = e.target.value;
+        if (e.target.name === 'registerNumber') {
+            value = value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        } else if (e.target.name === 'name') {
+            value = value.toUpperCase();
+        } else if (e.target.name === 'emergencyContact' || e.target.name === 'parentPhone') {
+            // Only allow 10 digits
+            value = value.replace(/\D/g, '').slice(0, 10);
+        }
+        setFormData({ ...formData, [e.target.name]: value });
     };
 
     const handleFileChange = (e) => {
@@ -36,9 +45,46 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        if (!formData.name || !formData.registerNumber || !formData.department || !formData.year || !formData.dob || !formData.bloodGroup || !formData.address || !formData.emergencyContact || !formData.parentPhone || !formData.officialEmail) {
+            addToast('Please fill in all required fields.', 'error');
+            setLoading(false);
+            return;
+        }
+
+        if (formData.officialEmail && !formData.officialEmail.endsWith('@bitsathy.ac.in')) {
+            addToast('Official Email must end with @bitsathy.ac.in', 'error');
+            setLoading(false);
+            return;
+        }
+
+        const phoneRegex = /^[6-9]\d{9}$/;
+        if (!phoneRegex.test(formData.emergencyContact)) {
+            addToast('Student Phone must be exactly 10 digits starting with 6, 7, 8, or 9.', 'error');
+            setLoading(false);
+            return;
+        }
+        if (!phoneRegex.test(formData.parentPhone)) {
+            addToast('Parent Phone must be exactly 10 digits starting with 6, 7, 8, or 9.', 'error');
+            setLoading(false);
+            return;
+        }
+
+        const yearToValidUpto = {
+            'I': '2025-2029',
+            'II': '2024-2028',
+            'III': '2023-2027',
+            'IV': '2022-2026'
+        };
+
         const data = new FormData();
         for (const key in formData) {
-            data.append(key, formData[key]);
+            if (key === 'validUpto') {
+                data.append(key, yearToValidUpto[formData.year] || formData.validUpto);
+            } else if (key === 'emergencyContact' || key === 'parentPhone') {
+                data.append(key, formData[key] ? '+91' + formData[key] : '');
+            } else {
+                data.append(key, formData[key]);
+            }
         }
         if (photo) {
             data.append('photo', photo);
@@ -105,7 +151,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
 
                 {/* Personal Information Group */}
                 <div className="space-y-4">
@@ -118,7 +164,6 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="John Doe"
                                 value={formData.name}
                                 onChange={handleInputChange}
                                 className={`input-field pl-10 ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
@@ -134,7 +179,6 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                             <input
                                 type="text"
                                 name="registerNumber"
-                                placeholder="REG2024..."
                                 value={formData.registerNumber}
                                 onChange={handleInputChange}
                                 className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
@@ -144,32 +188,42 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         </div>
                         <div>
                             <label className="label">Department</label>
-                            <input
-                                type="text"
+                            <select
                                 name="department"
-                                placeholder="CSE"
                                 value={formData.department}
                                 onChange={handleInputChange}
                                 className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                                 required
-                                readOnly={isStudentView}
-                            />
+                                disabled={isStudentView}
+                            >
+                                <option value="">Select Department</option>
+                                <option value="COMPUTER SCIENCE ENGINEERING">COMPUTER SCIENCE ENGINEERING</option>
+                                <option value="COMPUTER SCIENCE AND BUSINESS SYSTEMS">COMPUTER SCIENCE AND BUSINESS SYSTEMS</option>
+                                <option value="ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING">ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING</option>
+                                <option value="ARTIFICIAL INTELLIGENCE AND DATA SCIENCE">ARTIFICIAL INTELLIGENCE AND DATA SCIENCE</option>
+                                <option value="COMPUTER TECHNOLOGY">COMPUTER TECHNOLOGY</option>
+                                <option value="COMPUTER SCIENCE AND DESIGN">COMPUTER SCIENCE AND DESIGN</option>
+                            </select>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="label">Year</label>
-                            <input
-                                type="text"
+                            <select
                                 name="year"
-                                placeholder="IV"
                                 value={formData.year}
                                 onChange={handleInputChange}
                                 className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
                                 required
-                                readOnly={isStudentView}
-                            />
+                                disabled={isStudentView}
+                            >
+                                <option value="">Select Year</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                            </select>
                         </div>
                         <div>
                             <label className="label">Gender</label>
@@ -187,7 +241,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         </div>
                         <div>
                             <label className="label">Blood Group</label>
-                            <input type="text" name="bloodGroup" placeholder="B+" value={formData.bloodGroup} onChange={handleInputChange} className="input-field" required />
+                            <input type="text" name="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange} className="input-field" required />
                         </div>
                     </div>
 
@@ -198,9 +252,10 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                             value={formData.studentType}
                             onChange={handleInputChange}
                             className="input-field"
+                            required
                         >
-                            <option value="Days Scholar">Days Scholar (Template 1)</option>
-                            <option value="Hosteller">Hosteller (Template 2)</option>
+                            <option value="Days Scholar">Days Scholar</option>
+                            <option value="Hosteller">Hosteller</option>
                         </select>
                         <p className="text-[10px] text-gray-400 font-medium italic">
                             * Template will be automatically selected based on student type.
@@ -216,23 +271,47 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         <label className="label">Address</label>
                         <div className="relative">
                             <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                            <input type="text" name="address" placeholder="123 Main St, City" value={formData.address} onChange={handleInputChange} className="input-field pl-10" required />
+                            <input type="text" name="address" value={formData.address} onChange={handleInputChange} className="input-field pl-10" required />
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="label">Emergency Contact</label>
-                            <div className="relative">
-                                <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                <input type="text" name="emergencyContact" placeholder="9876543210" value={formData.emergencyContact} onChange={handleInputChange} className="input-field pl-10" required />
+                            <label className="label">Student Phone</label>
+                            <div className="flex items-center gap-1">
+                                <span className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2.5 text-gray-500 font-bold text-sm">+91</span>
+                                <div className="relative flex-1">
+                                    <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        name="emergencyContact"
+                                        value={formData.emergencyContact}
+                                        onChange={handleInputChange}
+                                        className="input-field pl-10"
+                                        placeholder="10-digit number"
+                                        maxLength="10"
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div>
                             <label className="label">Parent Phone</label>
-                            <div className="relative">
-                                <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                <input type="text" name="parentPhone" placeholder="9876543210" value={formData.parentPhone} onChange={handleInputChange} className="input-field pl-10" required />
+                            <div className="flex items-center gap-1">
+                                <span className="bg-gray-100 border border-gray-300 rounded-lg px-3 py-2.5 text-gray-500 font-bold text-sm">+91</span>
+                                <div className="relative flex-1">
+                                    <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        name="parentPhone"
+                                        value={formData.parentPhone}
+                                        onChange={handleInputChange}
+                                        className="input-field pl-10"
+                                        placeholder="10-digit number"
+                                        maxLength="10"
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -240,14 +319,10 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="label">Official E-mail</label>
-                            <input type="email" name="officialEmail" placeholder="student@bitsathy.ac.in" value={formData.officialEmail} onChange={handleInputChange} className="input-field" required />
+                            <input type="email" name="officialEmail" value={formData.officialEmail} onChange={handleInputChange} className="input-field" required />
                         </div>
                         <div>
-                            <label className="label">Valid Upto</label>
-                            <div className="relative">
-                                <Calendar className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                                <input type="text" name="validUpto" placeholder="YYYY-MM-DD" value={formData.validUpto} onChange={handleInputChange} className="input-field pl-10" required />
-                            </div>
+                            {/* Valid Upto is now auto-calculated */}
                         </div>
                     </div>
                 </div>

@@ -7,14 +7,14 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 connectDB();
 
 const app = express();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json());
@@ -25,13 +25,30 @@ app.use('/api/students', studentRoutes);
 // Make uploads folder static
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.get('/', (req, res) => {
-    res.send('Student ID Generator API is running...');
-});
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+    const frontendPath = path.join(__dirname, '../frontend/dist');
+    app.use(express.static(frontendPath));
+
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api') && !req.path.startsWith('/uploads')) {
+            res.sendFile(path.resolve(frontendPath, 'index.html'));
+        }
+    });
+} else {
+    app.get('/', (req, res) => {
+        res.send('Student ID Generator API is running...');
+    });
+}
+
+// Health Check
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok' }));
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+    console.error(`Status: ${statusCode}, Error: ${err.message}`);
+    if (err.stack) console.error(err.stack);
     res.status(statusCode);
     res.json({
         message: err.message,

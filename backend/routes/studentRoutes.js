@@ -6,7 +6,8 @@ import {
     getStudentProfile,
     updateStudentProfile,
     verifyStudent,
-    bulkCreateStudents
+    bulkCreateStudents,
+    verifyStudentPublic
 } from '../controllers/studentController.js';
 import { authStudent, registerStudent } from '../controllers/authController.js';
 import { protect, protectStudent } from '../middleware/authMiddleware.js';
@@ -20,6 +21,7 @@ router.route('/')
 
 router.put('/:id/verify', protect, admin, verifyStudent);
 router.post('/bulk', protect, admin, bulkCreateStudents);
+router.get('/verify/:registerNumber', verifyStudentPublic); // Public verification route
 
 // Student routes
 router.post('/login', authStudent);

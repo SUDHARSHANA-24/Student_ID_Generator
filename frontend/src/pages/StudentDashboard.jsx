@@ -89,11 +89,13 @@ const StudentDashboard = () => {
                 <div className={`px-4 py-2 rounded-full flex items-center gap-2 text-sm font-bold shadow-sm border
                     ${student.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' :
                         student.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-100' :
-                            'bg-amber-50 text-amber-700 border-amber-100'}`}
+                            student.status === 'Discontinued' ? 'bg-gray-50 text-gray-700 border-gray-100' :
+                                'bg-amber-50 text-amber-700 border-amber-100'}`}
                 >
                     {student.status === 'Approved' ? <CheckCircle className="w-4 h-4" /> :
                         student.status === 'Rejected' ? <XCircle className="w-4 h-4" /> :
-                            <Clock className="w-4 h-4" />}
+                            student.status === 'Discontinued' ? <XCircle className="w-4 h-4" /> :
+                                <Clock className="w-4 h-4" />}
                     Status: {student.status}
                 </div>
             </div>
@@ -167,23 +169,34 @@ const StudentDashboard = () => {
                         </div>
                     )}
 
-                    {student.status === 'Approved' && !showEditForm && (
+                    {(student.status === 'Approved' || student.status === 'Discontinued') && !showEditForm && (
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
                             <div className="text-center mb-8">
-                                <h2 className="text-xl font-bold font-heading text-slate-900 mb-2">Your Digital ID Card</h2>
-                                <p className="text-gray-500 text-sm">Review your details below.</p>
+                                <h2 className="text-xl font-bold font-heading text-slate-900 mb-2">
+                                    {student.status === 'Discontinued' ? 'Invalidated ID Card' : 'Your Digital ID Card'}
+                                </h2>
+                                <p className="text-gray-500 text-sm">
+                                    {student.status === 'Discontinued' ? 'This ID card has been discontinued and is no longer valid.' : 'Review your details below.'}
+                                </p>
                             </div>
                             <div className="flex justify-center mb-8">
                                 <IDCard student={student} />
                             </div>
                             <div className="flex justify-center">
-                                <button
-                                    onClick={downloadPDF}
-                                    className="btn-primary px-8 py-3 rounded-full flex items-center gap-2"
-                                >
-                                    <Download className="w-5 h-5" />
-                                    <span>Download PDF</span>
-                                </button>
+                                {student.status === 'Discontinued' ? (
+                                    <div className="bg-red-50 text-red-700 px-6 py-3 rounded-xl border border-red-100 text-sm font-bold flex items-center gap-2">
+                                        <XCircle className="w-5 h-5" />
+                                        Downloads are disabled for discontinued IDs
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={downloadPDF}
+                                        className="btn-primary px-8 py-3 rounded-full flex items-center gap-2"
+                                    >
+                                        <Download className="w-5 h-5" />
+                                        <span>Download PDF</span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     )}

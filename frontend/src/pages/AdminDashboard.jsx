@@ -288,6 +288,7 @@ const AdminDashboard = () => {
                                 <option value="Pending">Pending</option>
                                 <option value="Approved">Approved</option>
                                 <option value="Rejected">Rejected</option>
+                                <option value="Discontinued">Discontinued</option>
                             </select>
                         </div>
 
@@ -328,11 +329,13 @@ const AdminDashboard = () => {
                                                 <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider
                                                     ${student.status === 'Approved' ? 'bg-green-100 text-green-700' :
                                                         student.status === 'Rejected' ? 'bg-red-100 text-red-700' :
-                                                            'bg-amber-100 text-amber-700'}`}>
+                                                            student.status === 'Discontinued' ? 'bg-gray-100 text-gray-700' :
+                                                                'bg-amber-100 text-amber-700'}`}>
                                                     <span className={`w-1.5 h-1.5 rounded-full 
                                                         ${student.status === 'Approved' ? 'bg-green-600' :
                                                             student.status === 'Rejected' ? 'bg-red-600' :
-                                                                'bg-amber-600'}`}></span>
+                                                                student.status === 'Discontinued' ? 'bg-gray-600' :
+                                                                    'bg-amber-600'}`}></span>
                                                     {student.status}
                                                 </span>
                                             </td>
@@ -408,46 +411,74 @@ const AdminDashboard = () => {
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-xs text-gray-400 uppercase font-black tracking-widest">Status</span>
-                                        <span className={`text-sm font-black ${selectedStudent.status === 'Approved' ? 'text-green-600' : 'text-amber-500'}`}>
+                                        <span className={`text-sm font-black ${selectedStudent.status === 'Approved' ? 'text-green-600' : selectedStudent.status === 'Rejected' ? 'text-red-600' : selectedStudent.status === 'Discontinued' ? 'text-gray-600' : 'text-amber-500'}`}>
                                             {selectedStudent.status}
                                         </span>
                                     </div>
                                 </div>
 
-                                <div className="space-y-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <button
-                                            onClick={() => handleVerify(selectedStudent._id, 'Approved')}
-                                            disabled={isProcessing}
-                                            className="bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <CheckCircle size={20} /> Approve
-                                        </button>
-                                        <button
-                                            onClick={() => {
-                                                if (!rejectionReason) {
-                                                    alert('Please provide a reason for rejection.');
-                                                    return;
-                                                }
-                                                handleVerify(selectedStudent._id, 'Rejected');
-                                            }}
-                                            disabled={isProcessing}
-                                            className="bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <XCircle size={20} /> Reject
-                                        </button>
-                                    </div>
+                                {selectedStudent.status && selectedStudent.status.toLowerCase() === 'pending' ? (
+                                    <div className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <button
+                                                onClick={() => handleVerify(selectedStudent._id, 'Approved')}
+                                                disabled={isProcessing}
+                                                className="bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                                            >
+                                                <CheckCircle size={20} /> Approve
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    if (!rejectionReason) {
+                                                        alert('Please provide a reason for rejection.');
+                                                        return;
+                                                    }
+                                                    handleVerify(selectedStudent._id, 'Rejected');
+                                                }}
+                                                disabled={isProcessing}
+                                                className="bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                                            >
+                                                <XCircle size={20} /> Reject
+                                            </button>
+                                        </div>
 
-                                    <div className="mt-4">
-                                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2 block">Rejection Note</label>
-                                        <textarea
-                                            value={rejectionReason}
-                                            onChange={(e) => setRejectionReason(e.target.value)}
-                                            placeholder="Reason for rejection (required only for rejection)"
-                                            className="w-full bg-slate-50 border border-gray-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none min-h-[100px]"
-                                        ></textarea>
+                                        <div className="mt-4">
+                                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2 block">Rejection Note</label>
+                                            <textarea
+                                                value={rejectionReason}
+                                                onChange={(e) => setRejectionReason(e.target.value)}
+                                                placeholder="Reason for rejection (required only for rejection)"
+                                                className="w-full bg-slate-50 border border-gray-200 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none min-h-[100px]"
+                                            ></textarea>
+                                        </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="p-8 bg-blue-50/50 rounded-3xl border border-blue-100/50 text-center space-y-4">
+                                        <div className="space-y-2">
+                                            <CheckCircle size={40} className={`mx-auto ${selectedStudent.status === 'Approved' ? 'text-green-500' : selectedStudent.status === 'Rejected' ? 'text-red-500' : 'text-gray-500'}`} />
+                                            <h4 className="font-black text-slate-800">Verification Complete</h4>
+                                            <p className="text-xs font-bold text-gray-500 max-w-[200px] mx-auto">
+                                                This student's ID has already been {selectedStudent.status.toLowerCase()}.
+                                            </p>
+                                        </div>
+
+                                        {selectedStudent.status === 'Approved' && (
+                                            <div className="pt-4 border-t border-blue-100/50">
+                                                <button
+                                                    onClick={() => {
+                                                        if (window.confirm('Are you sure you want to mark this student as Discontinued? This will invalidate their ID card.')) {
+                                                            handleVerify(selectedStudent._id, 'Discontinued');
+                                                        }
+                                                    }}
+                                                    disabled={isProcessing}
+                                                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+                                                >
+                                                    <XCircle size={14} /> Mark as Discontinued
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

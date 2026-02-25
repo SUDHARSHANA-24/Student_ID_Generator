@@ -5,24 +5,41 @@ const studentSchema = mongoose.Schema({
     registerNumber: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        uppercase: true,
+        trim: true
     },
     name: {
         type: String,
-        required: true
+        required: true,
+        uppercase: true,
+        trim: true
     },
     email: {
         type: String,
-        unique: true,
-        sparse: true
+        required: true,
+        unique: true
     },
     department: {
         type: String,
-        required: true
+        required: true,
+        uppercase: true,
+        trim: true,
+        enum: [
+            'COMPUTER SCIENCE ENGINEERING',
+            'COMPUTER SCIENCE AND BUSINESS SYSTEMS',
+            'ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING',
+            'ARTIFICIAL INTELLIGENCE AND DATA SCIENCE',
+            'COMPUTER TECHNOLOGY',
+            'COMPUTER SCIENCE AND DESIGN'
+        ]
     },
     year: {
         type: String,
-        required: true
+        required: true,
+        uppercase: true,
+        trim: true,
+        enum: ['I', 'II', 'III', 'IV']
     },
     // Optional fields for initial registration
     dob: {
@@ -42,10 +59,12 @@ const studentSchema = mongoose.Schema({
         type: String
     },
     emergencyContact: {
-        type: String
+        type: String,
+        match: [/^\+91[6-9]\d{9}$/, 'Student phone must start with +91 and be 10 digits starting with 6-9']
     },
     parentPhone: {
-        type: String
+        type: String,
+        match: [/^\+91[6-9]\d{9}$/, 'Parent phone must start with +91 and be 10 digits starting with 6-9']
     },
     officialEmail: {
         type: String
@@ -55,8 +74,8 @@ const studentSchema = mongoose.Schema({
     },
     templateType: {
         type: String,
-        enum: ['1', '2'],
-        default: '1'
+        enum: ['3', '4'],
+        default: '4'
     },
     studentType: {
         type: String,
@@ -65,12 +84,28 @@ const studentSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['Registered', 'Pending', 'Approved', 'Rejected'],
+        enum: ['Registered', 'Pending', 'Approved', 'Rejected', 'Discontinued'],
         default: 'Registered'
     },
     rejectionReason: {
         type: String
-    }
+    },
+    source: {
+        type: String,
+        enum: ['Admin', 'Student', 'Bulk'],
+        default: 'Admin'
+    },
+    approvalDate: {
+        type: Date
+    },
+    history: [
+        {
+            status: String,
+            message: String,
+            updatedBy: String,
+            timestamp: { type: Date, default: Date.now }
+        }
+    ]
 }, {
     timestamps: true
 });

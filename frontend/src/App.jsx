@@ -4,6 +4,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import AdminLayout from './components/AdminLayout';
 import StudentLayout from './components/StudentLayout';
+import VerificationPage from './pages/VerificationPage';
 import { ToastProvider } from './components/Toast';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           {/* Public Route - Combined Login */}
           <Route path="/" element={<CombinedLogin />} />
+          <Route path="/verify/:registerNumber" element={<VerificationPage />} />
 
           {/* Admin Routes */}
           <Route
