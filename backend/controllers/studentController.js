@@ -30,7 +30,7 @@ const createStudent = asyncHandler(async (req, res) => {
     let photoUrl = '';
 
     if (req.file) {
-        photoUrl = req.file.path;
+        photoUrl = req.file.path; // Cloudinary secure_url
     } else {
         // Use default image based on gender
         const gender = req.body.gender;
@@ -171,7 +171,7 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
         }
 
         if (req.file) {
-            student.photoUrl = req.file.path;
+            student.photoUrl = req.file.path; // Cloudinary secure_url
             changedFields.push('Photo');
         }
 
