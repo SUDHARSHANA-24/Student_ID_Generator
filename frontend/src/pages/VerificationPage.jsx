@@ -4,6 +4,10 @@ import axios from 'axios';
 import { CheckCircle, XCircle, Loader, Shield, BookOpen, GraduationCap, ExternalLink, Home, ChevronDown, ChevronUp, Clock, History } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
+// optionally configure base url via VITE_APP_BASE_URL for QR codes (e.g. https://yourapp.onrender.com)
+const getBaseUrl = () => import.meta.env.VITE_APP_BASE_URL || window.location.origin;
+
+
 const VerificationPage = () => {
     const { registerNumber } = useParams();
     const [student, setStudent] = useState(null);
@@ -13,14 +17,21 @@ const VerificationPage = () => {
     const [showMentorUnlock, setShowMentorUnlock] = useState(false);
     const [pinValue, setPinValue] = useState('');
     const [pinError, setPinError] = useState(false);
+    const [imgError, setImgError] = useState(false);
+
+    // debug logs before any return
+    console.debug('VerificationPage start', { registerNumber });
 
     useEffect(() => {
+        console.debug('VerificationPage useEffect', registerNumber, 'baseUrl', getBaseUrl());
         const fetchStudent = async () => {
             try {
                 const { data } = await axios.get(`/api/students/verify/${registerNumber}`);
+                console.debug('fetchStudent data', data);
                 setStudent(data);
                 setLoading(false);
             } catch (err) {
+                console.error('fetchStudent error', err);
                 setError(err.response?.data?.message || 'Student not found');
                 setLoading(false);
             }
@@ -72,14 +83,15 @@ const VerificationPage = () => {
     })();
 
     // Debugging: log photo URL variants to help trace loading issues
-    // (Remove these logs when issue is resolved)
     console.debug('VerificationPage: student.photoUrl =', student?.photoUrl);
     console.debug('VerificationPage: formattedPhotoUrl =', formattedPhotoUrl);
 
-    const [imgError, setImgError] = useState(false);
-
     return (
         <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center py-12 px-4 selection:bg-blue-100 font-['Poppins']">
+            {/* debug panel - remove later */}
+            <pre className="absolute top-2 left-2 bg-white p-2 text-xs text-red-600 z-50">
+                registerNumber: {registerNumber}\nurl: {getBaseUrl()}/verify/{registerNumber}
+            </pre>
             {/* Success Banner */}
             <div className="w-full max-w-md bg-green-500 text-white p-4 rounded-t-2xl flex items-center justify-center gap-3 shadow-lg">
                 <CheckCircle className="w-6 h-6" />
@@ -291,7 +303,7 @@ const VerificationPage = () => {
                 <h3 className="text-center text-sm font-bold text-slate-800 mb-4">Point Camera to Scan</h3>
                 <div className="flex justify-center bg-slate-50 p-4 rounded-lg">
                     <QRCodeSVG
-                        value={`${window.location.origin}/verify/${student.registerNumber}`}
+                        value={`${import.meta.env.VITE_APP_BASE_URL || window.location.origin}/verify/${student.registerNumber}`}
                         size={200}
                         level="H"
                         marginSize={4}

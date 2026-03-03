@@ -23,8 +23,11 @@ const IDCard = ({ student, printable = false }) => {
         status
     } = student;
 
-    const verificationUrl = `${window.location.origin}/verify/${registerNumber}`;
+    // allow overriding origin in production via environment variable
+    const baseUrl = import.meta.env.VITE_APP_BASE_URL || window.location.origin;
+    const verificationUrl = `${baseUrl}/verify/${registerNumber}`;
     const qrData = verificationUrl;
+    console.debug('IDCard qrData', qrData);
 
     // Format photo URL
     const getFormattedPhotoUrl = (url) => {
