@@ -27,9 +27,18 @@ const IDCard = ({ student, printable = false }) => {
     const qrData = verificationUrl;
 
     // Format photo URL
-    const formattedPhotoUrl = photoUrl 
-        ? (photoUrl.startsWith('http') ? photoUrl : `/${photoUrl.replace(/\\/g, '/')}`) 
-        : '';
+    const getFormattedPhotoUrl = (url) => {
+        if (!url) return "https://via.placeholder.com/150?text=BIT+PHOTO";
+        if (url.startsWith('http')) return url;
+        
+        // Clean up leading slashes and handle both forward and back slashes
+        const cleanPath = url.replace(/^[\\/]+/, '').replace(/\\/g, '/');
+        
+        // If it already starts with 'uploads/', don't double it
+        return `/${cleanPath}`;
+    };
+
+    const formattedPhotoUrl = getFormattedPhotoUrl(photoUrl);
 
     const handleFlip = () => setIsFlipped(!isFlipped);
 
@@ -72,7 +81,7 @@ const IDCard = ({ student, printable = false }) => {
                     <div className="w-36 h-36 rounded-full border-4 border-[#001f3f]/10 p-1">
                         <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#001f3f]">
                             <img
-                                src={formattedPhotoUrl || "https://via.placeholder.com/150?text=BIT+PHOTO"}
+                                src={formattedPhotoUrl}
                                 alt={name}
                                 className="w-full h-full object-cover"
                             />
@@ -216,7 +225,7 @@ const IDCard = ({ student, printable = false }) => {
                     <div className="w-36 h-36 rounded-full border-4 border-[#7f1d1d]/10 p-1">
                         <div className="w-full h-full rounded-full overflow-hidden border-2 border-[#7f1d1d]">
                             <img
-                                src={formattedPhotoUrl || "https://via.placeholder.com/150?text=BIT+PHOTO"}
+                                src={formattedPhotoUrl}
                                 alt={name}
                                 className="w-full h-full object-cover"
                             />
