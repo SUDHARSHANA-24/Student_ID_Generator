@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Upload, Plus, Save, User, Calendar, MapPin, Phone, CreditCard } from 'lucide-react';
 import { useToast } from './Toast';
@@ -24,6 +24,28 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
     const { addToast } = useToast();
 
     const userInfo = JSON.parse(localStorage.getItem(isStudentView ? 'studentInfo' : 'userInfo'));
+
+    // Sync form data when existingStudent changes
+    useEffect(() => {
+        if (existingStudent) {
+            setFormData(prev => ({
+                ...prev,
+                name: existingStudent.name || prev.name,
+                registerNumber: existingStudent.registerNumber || prev.registerNumber,
+                department: existingStudent.department || prev.department,
+                year: existingStudent.year || prev.year,
+                dob: existingStudent.dob ? new Date(existingStudent.dob).toISOString().split('T')[0] : prev.dob,
+                bloodGroup: existingStudent.bloodGroup || prev.bloodGroup,
+                gender: existingStudent.gender || prev.gender,
+                address: existingStudent.address || prev.address,
+                emergencyContact: existingStudent.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : prev.emergencyContact,
+                parentPhone: existingStudent.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : prev.parentPhone,
+                officialEmail: existingStudent.officialEmail || existingStudent.email || prev.officialEmail,
+                validUpto: existingStudent.validUpto || prev.validUpto,
+                studentType: existingStudent.studentType || prev.studentType
+            }));
+        }
+    }, [existingStudent]);
 
     const handleInputChange = (e) => {
         let value = e.target.value;
@@ -51,8 +73,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
             return;
         }
 
-        // Photo check for new registrations
-        if (!existingStudent && !photo) {
+        // Photo check: strictly required if no photo is currently uploaded AND no existing photo exists in profile
+        if (!photo && !existingStudent?.photoUrl) {
             addToast('Please upload a student photo.', 'error');
             setLoading(false);
             return;
@@ -345,7 +367,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
 
 
                 <div>
-                    <label className="label">Student Photo {existingStudent ? '(Optional to change)' : '(Required)'}</label>
+                    <label className="label">Student Photo {(!existingStudent?.photoUrl) ? '(Required)' : '(Optional to change)'}</label>
                     <div className="flex flex-col md:flex-row gap-4 items-start mt-1">
                         {(photo || existingStudent?.photoUrl) && (
                             <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
