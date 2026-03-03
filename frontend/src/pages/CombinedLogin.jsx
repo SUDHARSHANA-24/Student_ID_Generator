@@ -13,7 +13,7 @@ const CombinedLogin = () => {
     const [studentEmail, setStudentEmail] = useState('');
     const [department, setDepartment] = useState('');
     const [year, setYear] = useState('');
-    const [studentType, setStudentType] = useState('Days Scholar');
+    const [studentType, setStudentType] = useState('');
     const [isRegistering, setIsRegistering] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -273,6 +273,7 @@ const CombinedLogin = () => {
                                         onChange={(e) => setStudentType(e.target.value)}
                                         required
                                     >
+                                        <option value="">Select Student Type</option>
                                         <option value="Days Scholar">Days Scholar</option>
                                         <option value="Hosteller">Hosteller</option>
                                     </select>

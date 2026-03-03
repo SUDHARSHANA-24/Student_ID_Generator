@@ -11,13 +11,13 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         year: existingStudent?.year || '',
         dob: existingStudent?.dob ? new Date(existingStudent.dob).toISOString().split('T')[0] : '',
         bloodGroup: existingStudent?.bloodGroup || '',
-        gender: existingStudent?.gender || 'Male',
+        gender: existingStudent?.gender || '',
         address: existingStudent?.address || '',
         emergencyContact: existingStudent?.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : '',
         parentPhone: existingStudent?.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : '',
         officialEmail: existingStudent?.officialEmail || existingStudent?.email || '',
         validUpto: existingStudent?.validUpto || '',
-        studentType: existingStudent?.studentType || 'Days Scholar'
+        studentType: existingStudent?.studentType || ''
     });
     const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                 year: existingStudent.year || prev.year,
                 dob: existingStudent.dob ? new Date(existingStudent.dob).toISOString().split('T')[0] : prev.dob,
                 bloodGroup: existingStudent.bloodGroup || prev.bloodGroup,
-                gender: existingStudent.gender || prev.gender,
+                gender: existingStudent.gender || '',
                 address: existingStudent.address || prev.address,
                 emergencyContact: existingStudent.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : prev.emergencyContact,
                 parentPhone: existingStudent.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : prev.parentPhone,
@@ -158,7 +158,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     year: '',
                     dob: '',
                     bloodGroup: '',
-                    gender: 'Male',
+                    gender: '',
                     address: '',
                     emergencyContact: '',
                     parentPhone: '',
@@ -268,7 +268,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         </div>
                         <div>
                             <label className="label">Gender</label>
-                            <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-field">
+                            <select name="gender" value={formData.gender} onChange={handleInputChange} className="input-field" required>
+                                <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
@@ -305,6 +306,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                             className="input-field"
                             required
                         >
+                            <option value="">Select Student Type</option>
                             <option value="Days Scholar">Days Scholar</option>
                             <option value="Hosteller">Hosteller</option>
                         </select>
