@@ -15,7 +15,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         address: existingStudent?.address || '',
         emergencyContact: existingStudent?.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : '',
         parentPhone: existingStudent?.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : '',
-        officialEmail: existingStudent?.officialEmail || '',
+        officialEmail: existingStudent?.officialEmail || existingStudent?.email || '',
         validUpto: existingStudent?.validUpto || '',
         studentType: existingStudent?.studentType || 'Days Scholar'
     });
@@ -326,7 +326,15 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="label">Official E-mail</label>
-                            <input type="email" name="officialEmail" value={formData.officialEmail} onChange={handleInputChange} className="input-field" required />
+                            <input 
+                                type="email" 
+                                name="officialEmail" 
+                                value={formData.officialEmail} 
+                                onChange={handleInputChange} 
+                                className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                required 
+                                readOnly={isStudentView}
+                            />
                         </div>
                         <div>
                             {/* Valid Upto is now auto-calculated */}
