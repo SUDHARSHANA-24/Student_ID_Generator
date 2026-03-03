@@ -382,7 +382,7 @@ const IDCard = ({ student, printable = false }) => {
                 className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full text-xs font-bold transition-all shadow-sm border border-slate-200"
             >
                 <RefreshCw className="w-3.5 h-3.5" />
-                Click to Rotate ID Card
+                {isFlipped ? '2 of 2' : '1 of 2'} - Click to Flip
             </button>
         </div>
     );

@@ -47,7 +47,12 @@ const CombinedLogin = () => {
             addToast('Login Successful. Welcome Student.', 'success');
             navigate('/student-dashboard');
         } catch (error) {
-            addToast(error.response?.data?.message || 'Invalid Credentials', 'error');
+            const errorMsg = error.response?.data?.message || 'Invalid Credentials';
+            if (errorMsg.includes('not found') || errorMsg.includes('Invalid Register Number')) {
+                addToast('Student ID doesn\'t exist. Please register first.', 'error');
+            } else {
+                addToast(errorMsg, 'error');
+            }
         } finally {
             setLoading(false);
         }

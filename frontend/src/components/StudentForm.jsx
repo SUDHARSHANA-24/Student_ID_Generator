@@ -282,7 +282,17 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         </div>
                         <div>
                             <label className="label">Blood Group</label>
-                            <input type="text" name="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange} className="input-field" required />
+                            <select name="bloodGroup" value={formData.bloodGroup} onChange={handleInputChange} className="input-field" required>
+                                <option value="">Select Blood Group</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
                         </div>
                     </div>
 
