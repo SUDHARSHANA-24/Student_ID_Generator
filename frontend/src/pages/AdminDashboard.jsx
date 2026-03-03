@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import IDCard from '../components/IDCard';
 import StudentForm from '../components/StudentForm';
 import {
@@ -17,6 +19,7 @@ const AdminDashboard = () => {
     const [filterStatus, setFilterStatus] = useState('All');
     const [rejectionReason, setRejectionReason] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isPrintMode, setIsPrintMode] = useState(false);
     const [activeView, setActiveView] = useState('overview'); // 'overview', 'register', 'list', 'bulk'
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -40,6 +43,38 @@ const AdminDashboard = () => {
             fetchStudents();
         }
     }, []);
+
+    const downloadPDF = (student) => {
+        if (!student) return;
+
+        // Use a slight delay to ensure the hidden element is updated if needed
+        // but since we render it for the modal, it should be there.
+        // Actually, we'll use the same hidden element strategy as StudentDashboard.
+        const printableElement = document.getElementById('admin-id-card-printable');
+        if (!printableElement) {
+            alert('Error: Printable element not found');
+            return;
+        }
+
+        html2canvas(printableElement, {
+            scale: 3,
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false,
+            allowTaint: true
+        }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('l', 'mm', 'a4');
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = 280;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            const x = (pageWidth - imgWidth) / 2;
+            const y = (pageHeight - imgHeight) / 2;
+            pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+            pdf.save(`${student.registerNumber}_ID_Card.pdf`);
+        });
+    };
 
     const handleVerify = async (id, status) => {
         setIsProcessing(true);
@@ -148,6 +183,39 @@ const AdminDashboard = () => {
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 pb-20">
+            {/* Print Mode View */}
+            {isPrintMode && (
+                <div className="fixed inset-0 z-[100] bg-white overflow-y-auto p-8">
+                    <div className="mb-8 flex justify-between items-center print:hidden border-b pb-4">
+                        <div>
+                            <h2 className="text-2xl font-black text-slate-800">Print View - Approved ID Cards</h2>
+                            <p className="text-gray-500 text-sm">Use browser print (Ctrl+P) to print all cards. Page breaks are handled automatically.</p>
+                        </div>
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => window.print()}
+                                className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg"
+                            >
+                                <Download size={20} /> Print Now
+                            </button>
+                            <button
+                                onClick={() => setIsPrintMode(false)}
+                                className="bg-gray-100 text-gray-700 px-6 py-3 rounded-xl font-bold border border-gray-200"
+                            >
+                                <X size={20} /> Exit Print View
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12 justify-items-center">
+                        {filteredStudents.map((student) => (
+                            <div key={student._id} className="break-inside-avoid mb-8 pb-8 border-b border-gray-100 md:border-none">
+                                <IDCard student={student} printable={true} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
             {/* Header / Breadcrumbs */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -290,6 +358,16 @@ const AdminDashboard = () => {
                                 <option value="Rejected">Rejected</option>
                                 <option value="Discontinued">Discontinued</option>
                             </select>
+                            
+                            {filterStatus === 'Approved' && (
+                                <button
+                                    onClick={() => setIsPrintMode(true)}
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md whitespace-nowrap"
+                                >
+                                    <FileSpreadsheet size={14} /> 
+                                    Enter Print View (All IDs)
+                                </button>
+                            )}
                         </div>
 
                         <div className="relative w-full lg:w-96">
@@ -463,7 +541,14 @@ const AdminDashboard = () => {
                                         </div>
 
                                         {selectedStudent.status === 'Approved' && (
-                                            <div className="pt-4 border-t border-blue-100/50">
+                                            <div className="pt-4 border-t border-blue-100/50 space-y-3">
+                                                <button
+                                                    onClick={() => downloadPDF(selectedStudent)}
+                                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md"
+                                                >
+                                                    <Download size={18} /> Download ID Card
+                                                </button>
+                                                
                                                 <button
                                                     onClick={() => {
                                                         if (window.confirm('Are you sure you want to mark this student as Discontinued? This will invalidate their ID card.')) {
@@ -471,7 +556,7 @@ const AdminDashboard = () => {
                                                         }
                                                     }}
                                                     disabled={isProcessing}
-                                                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+                                                    className="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all"
                                                 >
                                                     <XCircle size={14} /> Mark as Discontinued
                                                 </button>
@@ -484,6 +569,11 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             )}
+            
+            {/* Hidden Printable Component for PDF Generation */}
+            <div style={{ position: 'absolute', left: '-9999px', top: '0' }}>
+                {selectedStudent && <IDCard student={selectedStudent} printable={true} id="admin-id-card-printable" />}
+            </div>
         </div>
     );
 };

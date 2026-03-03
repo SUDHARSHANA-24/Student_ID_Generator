@@ -125,7 +125,7 @@ const IDCard = ({ student, printable = false }) => {
     );
 
     const Template3Back = () => (
-        <div className="absolute inset-0 w-[320px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-['Poppins'] p-6 backface-hidden rotate-y-180">
+        <div className={`absolute inset-0 w-[320px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-['Poppins'] p-6 backface-hidden ${!printable ? 'rotate-y-180' : ''}`}>
             <DiscontinuedWatermark />
             <h3 className="text-[#001f3f] font-bold text-xs uppercase tracking-widest mb-6 border-b pb-2">Student Information</h3>
             <div className="space-y-4 flex-1">
@@ -269,7 +269,7 @@ const IDCard = ({ student, printable = false }) => {
     );
 
     const Template4Back = () => (
-        <div className="absolute inset-0 w-[320px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-['Poppins'] p-6 backface-hidden rotate-y-180">
+        <div className={`absolute inset-0 w-[320px] h-[500px] bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col font-['Poppins'] p-6 backface-hidden ${!printable ? 'rotate-y-180' : ''}`}>
             <DiscontinuedWatermark />
             <h3 className="text-[#7f1d1d] font-bold text-xs uppercase tracking-widest mb-6 border-b pb-2">Student Information</h3>
             <div className="space-y-4 flex-1">
