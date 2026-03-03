@@ -56,7 +56,19 @@ const VerificationPage = () => {
         );
     }
 
-    const formattedPhotoUrl = student.photoUrl ? `/${student.photoUrl.replace(/\\/g, '/')}` : '';
+    const formattedPhotoUrl = (() => {
+        if (!student || !student.photoUrl) return '';
+        const url = String(student.photoUrl).trim();
+
+        // If it's an absolute URL (Cloudinary or other CDN), use as-is
+        if (url.toLowerCase().startsWith('http')) return url;
+
+        // Normalize Windows backslashes and leading slashes for local upload paths
+        const cleaned = url.replace(/^[\\/]+/, '').replace(/\\/g, '/');
+
+        // Ensure it is served from the uploads/static root
+        return `/${cleaned}`;
+    })();
 
     return (
         <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center py-12 px-4 selection:bg-blue-100 font-['Poppins']">
