@@ -70,6 +70,13 @@ const VerificationPage = () => {
         return `/${cleaned}`;
     })();
 
+    // Debugging: log photo URL variants to help trace loading issues
+    // (Remove these logs when issue is resolved)
+    console.debug('VerificationPage: student.photoUrl =', student?.photoUrl);
+    console.debug('VerificationPage: formattedPhotoUrl =', formattedPhotoUrl);
+
+    const [imgError, setImgError] = useState(false);
+
     return (
         <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center py-12 px-4 selection:bg-blue-100 font-['Poppins']">
             {/* Success Banner */}
@@ -103,6 +110,7 @@ const VerificationPage = () => {
                                     src={formattedPhotoUrl || "https://via.placeholder.com/150"}
                                     alt={student.name}
                                     className="w-full h-full object-cover rounded-full shadow-md"
+                                    onError={() => setImgError(true)}
                                 />
                             </div>
                             <div className="absolute -bottom-2 -right-2 bg-green-500 text-white p-2 rounded-full shadow-lg border-4 border-white">
@@ -117,6 +125,14 @@ const VerificationPage = () => {
                             {student.registerNumber}
                         </div>
                     </div>
+
+                    {imgError && (
+                        <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded-lg text-sm text-red-700">
+                            <p className="font-bold">Image failed to load.</p>
+                            <p className="break-all">raw photoUrl: {String(student.photoUrl)}</p>
+                            <p className="break-all">served src: {formattedPhotoUrl || 'empty'}</p>
+                        </div>
+                    )}
 
                     {/* Details Grid */}
                     <div className="grid grid-cols-1 gap-4">
