@@ -298,25 +298,7 @@ const VerificationPage = () => {
                 </div>
             </div>
 
-            {/* Separate QR Code for Mobile Scanning */}
-            <div className="mt-12 w-full max-w-md bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-                <h3 className="text-center text-sm font-bold text-slate-800 mb-4">Point Camera to Scan</h3>
-                <div className="flex justify-center bg-slate-50 p-4 rounded-lg">
-                    <QRCodeSVG
-                        value={`${import.meta.env.VITE_APP_BASE_URL || window.location.origin}/verify/${student.registerNumber}`}
-                        size={200}
-                        level="H"
-                        marginSize={4}
-                        bgColor="#FFFFFF"
-                        fgColor="#000000"
-                        includeMargin={true}
-                    />
-                </div>
-                <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-4 flex items-center justify-center gap-2">
-                    <ExternalLink className="w-3 h-3" />
-                    Scan QR code for authentication
-                </p>
-            </div>
+
         </div>
     );
 };
