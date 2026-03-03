@@ -64,6 +64,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         setPhoto(e.target.files[0]);
     };
 
+    const isRealPhoto = (url) => url && !url.toLowerCase().includes('default');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -73,8 +75,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
             return;
         }
 
-        // Photo check: strictly required if no photo is currently uploaded AND no existing photo exists in profile
-        if (!photo && !existingStudent?.photoUrl) {
+        // Photo check: strictly required if no photo is currently uploaded AND no real photo exists in profile
+        if (!photo && !isRealPhoto(existingStudent?.photoUrl)) {
             addToast('Please upload a student photo.', 'error');
             setLoading(false);
             return;
@@ -367,7 +369,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
 
 
                 <div>
-                    <label className="label">Student Photo {(!existingStudent?.photoUrl) ? '(Required)' : '(Optional to change)'}</label>
+                    <label className="label">Student Photo {!isRealPhoto(existingStudent?.photoUrl) ? '(Required)' : '(Optional to change)'}</label>
                     <div className="flex flex-col md:flex-row gap-4 items-start mt-1">
                         {(photo || existingStudent?.photoUrl) && (
                             <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
