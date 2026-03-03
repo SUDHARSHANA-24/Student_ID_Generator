@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Phone, MapPin, User, School, Shield, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
-const IDCard = ({ student }) => {
+const IDCard = ({ student, printable = false }) => {
     const [isFlipped, setIsFlipped] = useState(false);
     if (!student) return null;
 
@@ -27,7 +27,9 @@ const IDCard = ({ student }) => {
     const qrData = verificationUrl;
 
     // Format photo URL
-    const formattedPhotoUrl = photoUrl ? `/${photoUrl.replace(/\\/g, '/')}` : '';
+    const formattedPhotoUrl = photoUrl 
+        ? (photoUrl.startsWith('http') ? photoUrl : `/${photoUrl.replace(/\\/g, '/')}`) 
+        : '';
 
     const handleFlip = () => setIsFlipped(!isFlipped);
 
@@ -330,6 +332,19 @@ const IDCard = ({ student }) => {
             </div>
         </div>
     );
+
+    if (printable) {
+        return (
+            <div id="id-card-printable" className="flex flex-row gap-8 p-8 bg-white">
+                <div className="relative w-[320px] h-[500px]">
+                    {studentType === 'Hosteller' ? <Template3Front /> : <Template4Front />}
+                </div>
+                <div className="relative w-[320px] h-[500px]">
+                    {studentType === 'Hosteller' ? <Template3Back /> : <Template4Back />}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center gap-6 py-8">

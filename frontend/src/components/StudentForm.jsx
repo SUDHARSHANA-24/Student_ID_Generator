@@ -51,6 +51,13 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
             return;
         }
 
+        // Photo check for new registrations
+        if (!existingStudent && !photo) {
+            addToast('Please upload a student photo.', 'error');
+            setLoading(false);
+            return;
+        }
+
         if (formData.officialEmail && !formData.officialEmail.endsWith('@bitsathy.ac.in')) {
             addToast('Official Email must end with @bitsathy.ac.in', 'error');
             setLoading(false);
@@ -330,14 +337,25 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
 
 
                 <div>
-                    <label className="label">Student Photo</label>
-                    <div className="relative mt-1">
-                        <input type="file" id="photo-upload" onChange={handleFileChange} className="hidden" />
-                        <label htmlFor="photo-upload" className="flex flex-col items-center justify-center gap-2 cursor-pointer w-full p-6 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors">
-                            <Upload className="w-6 h-6 text-gray-400" />
-                            <span className="text-sm text-gray-600">{photo ? photo.name : "Click to upload photo"}</span>
-                            <span className="text-xs text-gray-400">JPG, PNG (Max 2MB)</span>
-                        </label>
+                    <label className="label">Student Photo {existingStudent ? '(Optional to change)' : '(Required)'}</label>
+                    <div className="flex flex-col md:flex-row gap-4 items-start mt-1">
+                        {(photo || existingStudent?.photoUrl) && (
+                            <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
+                                <img 
+                                    src={photo ? URL.createObjectURL(photo) : (existingStudent.photoUrl.startsWith('http') ? existingStudent.photoUrl : `/${existingStudent.photoUrl.replace(/\\/g, '/')}`)} 
+                                    alt="Preview" 
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        )}
+                        <div className="relative flex-1 w-full">
+                            <input type="file" id="photo-upload" onChange={handleFileChange} className="hidden" accept="image/*" />
+                            <label htmlFor="photo-upload" className="flex flex-col items-center justify-center gap-2 cursor-pointer w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors">
+                                <Upload className="w-5 h-5 text-gray-400" />
+                                <span className="text-sm text-gray-600">{photo ? photo.name : (existingStudent?.photoUrl ? "Change photo" : "Click to upload photo")}</span>
+                                <span className="text-xs text-gray-400">JPG, PNG (Max 2MB)</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

@@ -41,29 +41,59 @@ const StudentDashboard = () => {
     }, []);
 
     const downloadPDF = () => {
-        const cardElement = document.getElementById('id-card');
-        if (!cardElement) return;
+        const dashboardElement = document.querySelector('.max-w-4xl');
+        if (!dashboardElement) return;
 
-        const originalTransform = cardElement.style.transform;
-        cardElement.style.transform = 'none';
+        // Create a temporary container for the printable ID card
+        const printContainer = document.createElement('div');
+        printContainer.style.position = 'fixed';
+        printContainer.style.left = '-9999px';
+        printContainer.style.top = '0';
+        document.body.appendChild(printContainer);
 
-        html2canvas(cardElement, {
-            scale: 2,
+        // We'll use a portal-like approach to render the printable ID card
+        // But since we are in a functional component, we'll just use a state to show/hide it
+        // and then capture it with html2canvas.
+        // For now, let's use a simpler approach: 
+        // 1. Create a div
+        // 2. Render IDCard with printable=true inside it (manually or via ReactDOM)
+        // 3. Capture it.
+
+        addToast('Preparing your ID card PDF...', 'info');
+
+        // To keep it simple and within the current component structure, 
+        // I'll add a hidden printable ID card to the JSX and reference it.
+        const printableElement = document.getElementById('id-card-printable');
+        if (!printableElement) {
+            addToast('Error generating PDF. Please try again.', 'error');
+            return;
+        }
+
+        html2canvas(printableElement, {
+            scale: 3, // Higher scale for better quality
             useCORS: true,
-            backgroundColor: null,
-            logging: false
+            backgroundColor: '#ffffff',
+            logging: false,
+            allowTaint: true
         }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             const pdf = new jsPDF('l', 'mm', 'a4');
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
-            const imgWidth = 200;
+            
+            // Calculate dimensions to fit on A4
+            const imgWidth = 280; // Almost full width of A4 landscape
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
             const x = (pageWidth - imgWidth) / 2;
             const y = (pageHeight - imgHeight) / 2;
+            
             pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
-            pdf.save(`${student.registerNumber}_ID.pdf`);
-            cardElement.style.transform = originalTransform;
+            pdf.save(`${student.registerNumber}_ID_Card.pdf`);
+            addToast('ID Card downloaded successfully!', 'success');
+        }).catch(err => {
+            console.error('PDF Generation Error:', err);
+            addToast('Failed to generate PDF.', 'error');
         });
     };
 
@@ -208,6 +238,11 @@ const StudentDashboard = () => {
                             <p className="text-gray-500">Your details have been submitted. The admin will verify them shortly.</p>
                         </div>
                     )}
+                </div>
+                
+                {/* Hidden Printable Component for PDF Generation */}
+                <div style={{ position: 'absolute', left: '-9999px', top: '0' }}>
+                    <IDCard student={student} printable={true} />
                 </div>
 
                 {/* Info and Tips */}
