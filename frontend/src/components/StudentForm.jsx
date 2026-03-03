@@ -64,7 +64,17 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         setPhoto(e.target.files[0]);
     };
 
-    const isRealPhoto = (url) => url && !url.toLowerCase().includes('default');
+    const isRealPhoto = (url) => {
+        if (!url || typeof url !== 'string') return false;
+        const normalized = url.toLowerCase().trim();
+        // Check for common falsy strings or placeholders
+        if (['', 'undefined', 'null', 'none', 'placeholder'].includes(normalized)) return false;
+        // Must contain 'http' (Cloudinary) or 'uploads/' (Local)
+        // AND must not contain 'default'
+        const hasValidPrefix = normalized.startsWith('http') || normalized.startsWith('uploads') || normalized.includes('/uploads/');
+        const isNotDefault = !normalized.includes('default');
+        return hasValidPrefix && isNotDefault;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -371,7 +381,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                 <div>
                     <label className="label">Student Photo {!isRealPhoto(existingStudent?.photoUrl) ? '(Required)' : '(Optional to change)'}</label>
                     <div className="flex flex-col md:flex-row gap-4 items-start mt-1">
-                        {(photo || existingStudent?.photoUrl) && (
+                        {(photo || isRealPhoto(existingStudent?.photoUrl)) && (
                             <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
                                 <img 
                                     src={photo ? URL.createObjectURL(photo) : (existingStudent.photoUrl.startsWith('http') ? existingStudent.photoUrl : `/${existingStudent.photoUrl.replace(/\\/g, '/')}`)} 
@@ -384,7 +394,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                             <input type="file" id="photo-upload" onChange={handleFileChange} className="hidden" accept="image/*" />
                             <label htmlFor="photo-upload" className="flex flex-col items-center justify-center gap-2 cursor-pointer w-full p-4 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors">
                                 <Upload className="w-5 h-5 text-gray-400" />
-                                <span className="text-sm text-gray-600">{photo ? photo.name : (existingStudent?.photoUrl ? "Change photo" : "Click to upload photo")}</span>
+                                <span className="text-sm text-gray-600">{photo ? photo.name : (isRealPhoto(existingStudent?.photoUrl) ? "Change photo" : "Click to upload photo")}</span>
                                 <span className="text-xs text-gray-400">JPG, PNG (Max 2MB)</span>
                             </label>
                         </div>
