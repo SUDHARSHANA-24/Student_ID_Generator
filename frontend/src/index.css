@@ -17,7 +17,11 @@
     }
 
     body {
-        @apply font-['Outfit'] text-slate-700 antialiased min-h-screen bg-slate-50 selection:bg-indigo-600 selection:text-white;
+        @apply font-['Outfit'] text-slate-700 antialiased min-h-screen bg-slate-50;
+    }
+
+    ::selection {
+        @apply bg-navy-800 text-white;
     }
 
     h1,
@@ -40,7 +44,7 @@
     }
 
     .input-field {
-        @apply w-full px-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all duration-300 font-medium;
+        @apply w-full px-4 py-3.5 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-navy-600/20 focus:border-navy-400 transition-all duration-300 font-medium;
     }
 
     .label {
@@ -48,7 +52,7 @@
     }
 
     .btn-primary {
-        @apply px-6 py-3.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2;
+        @apply px-6 py-3.5 bg-navy-800 text-white rounded-xl font-bold hover:bg-crimson-600 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-navy-900/10 flex items-center justify-center gap-2;
     }
 
     .btn-secondary {
@@ -64,7 +68,7 @@
     }
 
     .sidebar-link.active {
-        @apply bg-blue-600 text-white shadow-md;
+        @apply bg-navy-800 text-white shadow-md;
     }
 
     /* 3D Flip Card Utilities */

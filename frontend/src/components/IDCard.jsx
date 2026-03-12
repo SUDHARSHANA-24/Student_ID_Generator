@@ -55,6 +55,31 @@ const IDCard = ({ student, printable = false }) => {
             </div>
         )
     );
+    
+    // Custom illegible signature (Low height version)
+    const PrincipalSignature = ({ color = "currentColor" }) => (
+        <svg width="85" height="35" viewBox="0 0 170 100" fill="none" className="translate-y-[-5px]">
+            {/* Compressed vertical height but kept the same signature style */}
+            <path 
+                d="M10 80 C15 80 25 70 35 60 L45 30 L55 90 C60 70 75 60 85 75 L95 20 C100 50 105 95 115 90 C125 85 135 60 145 55 Q155 50 150 65 L135 75" 
+                stroke={color || "#0F172A"} 
+                strokeWidth="3.5" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+                className="opacity-95"
+            />
+            {/* Dot placement adjusted for low profile */}
+            <circle cx="140" cy="85" r="3" fill={color || "#0F172A"} className="opacity-80" />
+            {/* Horizontal authenticity stroke */}
+            <path 
+                d="M35 65L65 60" 
+                stroke={color || "#0F172A"} 
+                strokeWidth="2" 
+                strokeLinecap="round"
+                className="opacity-60"
+            />
+        </svg>
+    );
 
 
     const Template3Front = () => (
@@ -114,8 +139,8 @@ const IDCard = ({ student, printable = false }) => {
 
                 <div className="mt-auto w-full px-8 pb-6 flex justify-between items-end">
                     <div className="flex flex-col items-center">
-                        <div className="h-10 flex items-center opacity-80">
-                            <span className="font-serif italic text-blue-900 font-bold text-xs whitespace-nowrap">C. Palani</span>
+                        <div className="h-10 flex items-center mb-1">
+                            <PrincipalSignature color="#001f3f" />
                         </div>
                         <p className="text-[9px] font-bold text-gray-400 tracking-wider pt-0.5 border-t border-gray-200 w-full text-center">PRINCIPAL</p>
                     </div>
@@ -258,8 +283,8 @@ const IDCard = ({ student, printable = false }) => {
 
                 <div className="mt-auto w-full px-8 pb-6 flex justify-between items-end">
                     <div className="flex flex-col items-center">
-                        <div className="h-10 flex items-center opacity-80">
-                            <span className="font-serif italic text-[#7f1d1d] font-bold text-xs whitespace-nowrap">C. Palani</span>
+                        <div className="h-10 flex items-center mb-1">
+                            <PrincipalSignature color="#7f1d1d" />
                         </div>
                         <p className="text-[9px] font-bold text-gray-400 tracking-wider pt-0.5 border-t border-gray-200 w-full text-center">PRINCIPAL</p>
                     </div>

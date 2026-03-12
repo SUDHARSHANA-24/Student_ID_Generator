@@ -14,14 +14,17 @@ const protect = asyncHandler(async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
             req.admin = await Admin.findById(decoded.id).select('-password');
-
+            if (!req.admin) {
+                console.error(`Admin not found for ID: ${decoded.id}`);
+                res.status(401);
+                throw new Error('Not authorized, admin not found');
+            }
             next();
         } catch (error) {
-            console.error(error);
+            console.error('Auth Admin Middleware Error:', error.message);
             res.status(401);
-            throw new Error('Not authorized, token failed');
+            throw new Error(`Not authorized, token failed: ${error.message}`);
         }
     }
 
@@ -42,19 +45,17 @@ const protectStudent = asyncHandler(async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
             req.student = await Student.findById(decoded.id).select('-password');
-
             if (!req.student) {
+                console.error(`Student not found for ID: ${decoded.id}`);
                 res.status(401);
                 throw new Error('Not authorized, student not found');
             }
-
             next();
         } catch (error) {
-            console.error(error);
+            console.error('Auth Student Middleware Error:', error.message);
             res.status(401);
-            throw new Error('Not authorized, token failed');
+            throw new Error(`Not authorized, token failed: ${error.message}`);
         }
     }
 

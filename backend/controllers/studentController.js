@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Student from '../models/Student.js';
+import Notification from '../models/Notification.js';
 
 // @desc    Register a new student (Admin only)
 // @route   POST /api/students
@@ -196,6 +197,14 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
 
             try {
                 const updatedStudent = await student.save();
+
+                // Create notification for admin
+                await Notification.create({
+                    userType: 'Admin',
+                    recipient: 'admin',
+                    message: `Student ${student.name} (${student.registerNumber}) has requested an ID card update/approval.`
+                });
+
                 res.json(updatedStudent);
             } catch (error) {
                 res.status(400);
@@ -243,6 +252,16 @@ const verifyStudent = asyncHandler(async (req, res) => {
 
         try {
             const updatedStudent = await student.save();
+
+            // Notify Student
+            await Notification.create({
+                userType: 'Student',
+                recipient: student.registerNumber,
+                message: status === 'Approved' 
+                    ? `Your ID card request has been Approved!` 
+                    : `Your ID card request has been ${status}. ${rejectionReason ? 'Reason: ' + rejectionReason : ''}`
+            });
+
             res.json(updatedStudent);
         } catch (error) {
             res.status(400);

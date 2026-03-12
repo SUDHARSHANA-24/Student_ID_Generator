@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, Users, LogOut, X, GraduationCap } from 'lucide-react';
+import Logo from './Logo';
 
 const Sidebar = ({ onClose }) => {
     const navItems = [
@@ -13,10 +14,7 @@ const Sidebar = ({ onClose }) => {
             {/* Logo Area */}
             <div className="flex items-center justify-between mb-8 px-2">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-white/20 rounded-lg backdrop-blur-md">
-                        <GraduationCap className="w-8 h-8 text-white" />
-                    </div>
-                    <span className="text-xl font-bold font-heading tracking-wide">EduID Gen</span>
+                    <Logo className="h-12 w-auto" />
                 </div>
                 <button onClick={onClose} className="lg:hidden p-1 hover:bg-white/10 rounded-md transition-colors">
                     <X className="w-6 h-6" />

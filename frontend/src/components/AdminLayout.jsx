@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Users, LogOut, Menu, X, School } from 'lucide-react';
+import Logo from './Logo';
+import NotificationDropdown from './NotificationDropdown';
 
 const AdminLayout = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,10 +33,7 @@ const AdminLayout = ({ children }) => {
                 {/* Logo */}
                 <div className="h-16 flex items-center justify-between px-6 bg-navy-800 border-b border-navy-800">
                     <div className="flex items-center gap-3">
-                        <div className="p-1.5 bg-blue-600 rounded-lg">
-                            <School className="w-6 h-6 text-white" />
-                        </div>
-                        <span className="text-xl font-heading font-bold tracking-wide">EduID</span>
+                        <Logo className="h-10 w-auto" />
                     </div>
                     <button onClick={toggleSidebar} className="lg:hidden text-gray-400 hover:text-white">
                         <X className="w-6 h-6" />
@@ -51,7 +50,7 @@ const AdminLayout = ({ children }) => {
                             className={({ isActive }) => `
                                 flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors
                                 ${isActive
-                                    ? 'bg-blue-600 text-white shadow-md'
+                                    ? 'bg-navy-800 text-white shadow-md'
                                     : 'text-gray-400 hover:bg-slate-800 hover:text-white'
                                 }
                             `}
@@ -95,6 +94,7 @@ const AdminLayout = ({ children }) => {
                         <div className="hidden md:block text-right">
                             <p className="text-sm font-medium text-gray-900">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
                         </div>
+                        <NotificationDropdown userInfo={JSON.parse(localStorage.getItem('userInfo'))} />
                         <button
                             onClick={handleLogout}
                             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-gray-200"

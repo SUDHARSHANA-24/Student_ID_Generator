@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { CheckCircle, XCircle, Loader, Shield, BookOpen, GraduationCap, ExternalLink, Home, ChevronDown, ChevronUp, Clock, History } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import Logo from '../components/Logo';
 
 // optionally configure base url via VITE_APP_BASE_URL for QR codes (e.g. https://yourapp.onrender.com)
 const getBaseUrl = () => import.meta.env.VITE_APP_BASE_URL || window.location.origin;
@@ -43,7 +44,7 @@ const VerificationPage = () => {
         return (
             <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="text-center">
-                    <Loader className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
+                    <Loader className="w-12 h-12 text-navy-600 animate-spin mx-auto mb-4" />
                     <p className="text-slate-600 font-bold">Verifying Student ID...</p>
                 </div>
             </div>
@@ -88,6 +89,11 @@ const VerificationPage = () => {
 
     return (
         <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center py-12 px-4 selection:bg-blue-100 font-['Poppins']">
+            {/* Logo */}
+            <div className="mb-6 flex flex-col items-center animate-fade-in-up">
+                <Logo className="h-16 w-auto" />
+            </div>
+
             {/* debug panel - remove later */}
             <pre className="absolute top-2 left-2 bg-white p-2 text-xs text-red-600 z-50">
                 registerNumber: {registerNumber}\nurl: {getBaseUrl()}/verify/{registerNumber}
@@ -106,7 +112,7 @@ const VerificationPage = () => {
                     </div>
                     <div className="relative z-10">
                         <div className="bg-white/10 w-16 h-16 rounded-2xl backdrop-blur-md flex items-center justify-center mx-auto mb-4 border border-white/20">
-                            <Shield className="w-8 h-8 text-blue-400" />
+                            <Shield className="w-8 h-8 text-navy-400" />
                         </div>
                         <h1 className="text-white font-black text-xl tracking-tighter uppercase">Authentic Student ID</h1>
                         <p className="text-blue-300/80 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Digital Verification System</p>
@@ -134,7 +140,7 @@ const VerificationPage = () => {
                         <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight text-center">
                             {student.name}
                         </h2>
-                        <div className="mt-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[11px] font-black uppercase tracking-wider">
+                        <div className="mt-2 px-3 py-1 bg-navy-50 text-navy-700 rounded-full text-[11px] font-black uppercase tracking-wider">
                             {student.registerNumber}
                         </div>
                     </div>
@@ -150,7 +156,7 @@ const VerificationPage = () => {
                     {/* Details Grid */}
                     <div className="grid grid-cols-1 gap-4">
                         <div className="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-100">
-                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-blue-600">
+                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-navy-600">
                                 <BookOpen className="w-5 h-5" />
                             </div>
                             <div>
@@ -160,7 +166,7 @@ const VerificationPage = () => {
                         </div>
 
                         <div className="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-100">
-                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-blue-600">
+                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-navy-600">
                                 <GraduationCap className="w-5 h-5" />
                             </div>
                             <div>
@@ -170,7 +176,7 @@ const VerificationPage = () => {
                         </div>
 
                         <div className="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-100">
-                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-blue-600">
+                            <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center mr-4 text-navy-600">
                                 <Shield className="w-5 h-5" />
                             </div>
                             <div className="flex-1">
@@ -251,14 +257,14 @@ const VerificationPage = () => {
                                                                 <div className={`absolute left-0 mt-1.5 h-6 w-6 -translate-x-1/2 rounded-full border-4 border-white flex items-center justify-center shadow-sm transition-colors
                                                                     ${item.status === 'Approved' ? 'bg-green-500' :
                                                                         item.status === 'Rejected' ? 'bg-red-500' :
-                                                                            item.status === 'Pending' ? 'bg-amber-500' : 'bg-blue-500'}`}>
+                                                                            item.status === 'Pending' ? 'bg-amber-500' : 'bg-navy-500'}`}>
                                                                 </div>
                                                                 <div className="flex-1">
                                                                     <div className="flex items-center justify-between mb-0.5">
                                                                         <p className={`text-[11px] font-black uppercase tracking-tight 
                                                                             ${item.status === 'Approved' ? 'text-green-600' :
                                                                                 item.status === 'Rejected' ? 'text-red-600' :
-                                                                                    item.status === 'Pending' ? 'text-amber-600' : 'text-blue-600'}`}>
+                                                                                    item.status === 'Pending' ? 'text-amber-600' : 'text-navy-600'}`}>
                                                                             {item.status}
                                                                         </p>
                                                                         <span className="text-[10px] font-bold text-slate-400">

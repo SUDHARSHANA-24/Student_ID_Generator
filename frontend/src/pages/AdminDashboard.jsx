@@ -41,8 +41,10 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (userInfo) {
             fetchStudents();
+            const interval = setInterval(fetchStudents, 10000); // Poll every 10 seconds for real-time updates
+            return () => clearInterval(interval);
         }
-    }, []);
+    }, [userInfo]);
 
     const downloadPDF = (student) => {
         if (!student) return;
@@ -194,7 +196,7 @@ const AdminDashboard = () => {
                         <div className="flex gap-4">
                             <button
                                 onClick={() => window.print()}
-                                className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg"
+                                className="bg-navy-800 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg"
                             >
                                 <Download size={20} /> Print Now
                             </button>
@@ -248,7 +250,7 @@ const AdminDashboard = () => {
                             title="Total Students"
                             value={students.length}
                             icon={Users}
-                            color="bg-blue-600"
+                            color="bg-navy-800"
                         />
                         <StatCard
                             title="Pending"
@@ -276,7 +278,7 @@ const AdminDashboard = () => {
                             title="New Student"
                             subtitle="Register Single ID"
                             icon={UserPlus}
-                            color="bg-gradient-to-br from-indigo-500 to-purple-600"
+                            color="bg-gradient-to-br from-crimson-600 to-crimson-800"
                             onClick={() => setActiveView('register')}
                         />
                         <MenuCard
@@ -323,7 +325,7 @@ const AdminDashboard = () => {
                             <span className="font-bold text-slate-700">Register Number, Name, Department, Year, Email</span>
                         </p>
 
-                        <label className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl cursor-pointer transition-all flex items-center justify-center gap-3 shadow-xl">
+                        <label className="w-full bg-navy-800 hover:bg-navy-900 text-white font-black py-4 rounded-2xl cursor-pointer transition-all flex items-center justify-center gap-3 shadow-xl">
                             <FileSpreadsheet />
                             {isProcessing ? 'Processing...' : 'Choose Excel File'}
                             <input
@@ -362,7 +364,7 @@ const AdminDashboard = () => {
                             {filterStatus === 'Approved' && (
                                 <button
                                     onClick={() => setIsPrintMode(true)}
-                                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md whitespace-nowrap"
+                                    className="bg-crimson-600 hover:bg-crimson-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md whitespace-nowrap"
                                 >
                                     <FileSpreadsheet size={14} /> 
                                     Enter Print View (All IDs)
@@ -544,7 +546,7 @@ const AdminDashboard = () => {
                                             <div className="pt-4 border-t border-blue-100/50 space-y-3">
                                                 <button
                                                     onClick={() => downloadPDF(selectedStudent)}
-                                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md"
+                                                    className="w-full bg-navy-800 hover:bg-navy-900 text-white font-black py-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-md"
                                                 >
                                                     <Download size={18} /> Download ID Card
                                                 </button>

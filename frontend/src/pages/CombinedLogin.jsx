@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { School, User, Lock, ArrowRight, ShieldCheck, GraduationCap } from 'lucide-react';
 import { useToast } from '../components/Toast';
+import Logo from '../components/Logo';
 
 const CombinedLogin = () => {
     const [activeTab, setActiveTab] = useState('admin'); // 'admin' or 'student'
@@ -89,19 +90,13 @@ const CombinedLogin = () => {
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center p-4 relative overflow-hidden">
             {/* Background Decorative Elements */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-200/20 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-sky-200/20 rounded-full blur-[120px]"></div>
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-navy-300/20 rounded-full blur-[120px]"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-crimson-300/20 rounded-full blur-[120px]"></div>
 
             {/* Brand Header */}
             <div className="mb-10 text-center animate-fade-in-up relative z-10">
-                <div className="inline-flex items-center gap-4 mb-4">
-                    <div className="p-4 bg-slate-900 rounded-2xl shadow-2xl shadow-slate-900/20 border border-slate-800">
-                        <School className="w-10 h-10 text-white" />
-                    </div>
-                    <div className="text-left">
-                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">EduID System</h1>
-                        <p className="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px]">Student ID Generator</p>
-                    </div>
+                <div className="flex flex-col items-center justify-center mb-4">
+                    <Logo className="h-16 w-auto" />
                 </div>
             </div>
 
@@ -148,7 +143,7 @@ const CombinedLogin = () => {
                                 <label className="label">Username</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <User className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                        <User className="h-5 w-5 text-slate-400 group-focus-within:text-navy-400 transition-colors" />
                                     </div>
                                     <input
                                         type="text"
@@ -165,7 +160,7 @@ const CombinedLogin = () => {
                                 <label className="label">Password</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                        <Lock className="h-5 w-5 text-slate-400 group-focus-within:text-navy-400 transition-colors" />
                                     </div>
                                     <input
                                         type="password"
@@ -291,7 +286,7 @@ const CombinedLogin = () => {
                             <button
                                 type="button"
                                 onClick={() => setIsRegistering(false)}
-                                className="w-full text-xs text-slate-500 font-black uppercase tracking-widest hover:text-indigo-600 transition-colors text-center"
+                                className="w-full text-xs text-slate-500 font-black uppercase tracking-widest hover:text-navy-600 transition-colors text-center"
                             >
                                 Login with existing account <span className="text-10">↗</span>
                             </button>
@@ -307,7 +302,7 @@ const CombinedLogin = () => {
                                 <label className="label">Register Number</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <School className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                        <School className="h-5 w-5 text-slate-400 group-focus-within:text-navy-400 transition-colors" />
                                     </div>
                                     <input
                                         type="text"
@@ -324,7 +319,7 @@ const CombinedLogin = () => {
                                 <label className="label">Full Name</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <User className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+                                        <User className="h-5 w-5 text-slate-400 group-focus-within:text-navy-400 transition-colors" />
                                     </div>
                                     <input
                                         type="text"
@@ -352,7 +347,7 @@ const CombinedLogin = () => {
                             <button
                                 type="button"
                                 onClick={() => setIsRegistering(true)}
-                                className="w-full text-sm text-blue-600 font-medium hover:underline"
+                                className="w-full text-sm text-navy-600 font-medium hover:underline"
                             >
                                 Don't have an account? Register
                             </button>

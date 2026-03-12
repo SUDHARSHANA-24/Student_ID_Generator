@@ -38,6 +38,9 @@ const StudentDashboard = () => {
 
     useEffect(() => {
         fetchProfile();
+        // Poll for profile updates every 30 seconds (e.g., status changes)
+        const interval = setInterval(fetchProfile, 30000);
+        return () => clearInterval(interval);
     }, []);
 
     const downloadPDF = () => {
@@ -100,7 +103,7 @@ const StudentDashboard = () => {
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center h-[60vh] text-slate-800">
-                <Loader className="w-10 h-10 animate-spin mb-4 text-blue-600" />
+                <Loader className="w-10 h-10 animate-spin mb-4 text-navy-800" />
                 <p className="text-lg font-medium">Loading Profile...</p>
             </div>
         );
@@ -248,10 +251,10 @@ const StudentDashboard = () => {
                 {/* Info and Tips */}
                 {!showEditForm && (
                     <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-blue-50 border border-blue-100 rounded-xl p-6">
-                            <Info className="w-6 h-6 text-blue-600 mb-3" />
-                            <h4 className="font-bold text-blue-800 mb-2">Getting Started</h4>
-                            <ul className="text-sm text-blue-700 space-y-2 list-disc pl-4">
+                        <div className="bg-slate-100 border border-slate-200 rounded-xl p-6">
+                            <Info className="w-6 h-6 text-navy-800 mb-3" />
+                            <h4 className="font-bold text-navy-900 mb-2">Getting Started</h4>
+                            <ul className="text-sm text-slate-700 space-y-2 list-disc pl-4">
                                 <li>Ensure your photo is clear and professional.</li>
                                 <li>The admin will verify your details before generation.</li>
                                 <li>Once approved, you can download your PDF.</li>

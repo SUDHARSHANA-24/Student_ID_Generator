@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { LogOut, School } from 'lucide-react';
+import Logo from './Logo';
+import NotificationDropdown from './NotificationDropdown';
 
 const StudentLayout = ({ children }) => {
     const navigate = useNavigate();
@@ -18,13 +20,12 @@ const StudentLayout = ({ children }) => {
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
                             <div className="flex-shrink-0 flex items-center gap-2">
-                                <div className="p-1.5 bg-blue-600 rounded-lg">
-                                    <School className="w-6 h-6 text-white" />
-                                </div>
-                                <h1 className="text-xl font-heading font-bold text-slate-900 tracking-tight">Student Portal</h1>
+                                <Logo className="h-10 w-auto" />
+                                <h1 className="text-xl font-heading font-bold text-slate-900 tracking-tight ml-2">Student Portal</h1>
                             </div>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center gap-4">
+                            <NotificationDropdown userInfo={JSON.parse(localStorage.getItem('studentInfo'))} />
                             <button
                                 onClick={handleLogout}
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-600 bg-red-50 hover:bg-red-100 transition-colors"

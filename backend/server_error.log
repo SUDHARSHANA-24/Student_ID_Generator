@@ -1,0 +1,592 @@
+[2026-03-09T10:27:37.804Z] GET /api/notifications - Status 401 - Error: Not authorized, no token
+Stack: Error: Not authorized, no token
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:52:15
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T10:29:17.303Z] GET /api/notifications - Status 401 - Error: Not authorized, no token
+Stack: Error: Not authorized, no token
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:52:15
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T10:39:10.269Z] UNCAUGHT EXCEPTION: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\application.js:635:24)
+    at file:///C:/Users/HOME/student-ID-generator/backend/server.js:80:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+[2026-03-09T13:52:21.638Z] UNCAUGHT EXCEPTION: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\application.js:635:24)
+    at file:///C:/Users/HOME/student-ID-generator/backend/server.js:80:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+[2026-03-09T14:15:36.125Z] UNCAUGHT EXCEPTION: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\application.js:635:24)
+    at file:///C:/Users/HOME/student-ID-generator/backend/server.js:80:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+[2026-03-09T14:16:51.019Z] UNCAUGHT EXCEPTION: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\application.js:635:24)
+    at file:///C:/Users/HOME/student-ID-generator/backend/server.js:80:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+[2026-03-09T14:18:27.253Z] GET /api/students/profile - Status 401 - Error: Not authorized, token failed
+Stack: Error: Not authorized, token failed
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
+
+[2026-03-09T14:18:29.405Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed
+Stack: Error: Not authorized, token failed
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+
+[2026-03-09T14:18:29.426Z] GET /api/students - Status 401 - Error: Not authorized, token failed
+Stack: Error: Not authorized, token failed
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:27:19
+
+[2026-03-09T14:18:29.434Z] UNCAUGHT EXCEPTION: EPIPE: broken pipe, write
+Stack: Error: EPIPE: broken pipe, write
+    at Socket._write (node:internal/net:63:18)
+    at writeOrBuffer (node:internal/streams/writable:572:12)
+    at _write (node:internal/streams/writable:501:10)
+    at Writable.write (node:internal/streams/writable:510:10)
+    at console.value (node:internal/console/constructor:298:16)
+    at console.error (node:internal/console/constructor:412:26)
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:25:21
+
+[2026-03-09T15:04:35.442Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed
+Stack: Error: Not authorized, token failed
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T15:05:51.040Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed
+Stack: Error: Not authorized, token failed
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T15:06:50.777Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: jwt malformed
+Stack: Error: Not authorized, token failed: jwt malformed
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T15:15:24.735Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: jwt malformed
+Headers: {
+  "host": "localhost:5000",
+  "user-agent": "curl/8.16.0",
+  "accept": "*/*",
+  "authorization": "Bearer fake_token"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: jwt malformed
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at asyncUtilWrap (C:\Users\HOME\student-ID-generator\backend\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\router\index.js:175:3)
+
+[2026-03-09T15:17:54.081Z] POST /api/students/login - Status 400 - Error: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+Headers: {
+  "host": "localhost:5000",
+  "user-agent": "curl/8.16.0",
+  "accept": "*/*",
+  "content-type": "application/json",
+  "content-length": "2"
+}
+Body: {}
+Stack: SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Users\HOME\student-ID-generator\backend\node_modules\body-parser\lib\types\json.js:92:19)
+    at C:\Users\HOME\student-ID-generator\backend\node_modules\body-parser\lib\read.js:128:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Users\HOME\student-ID-generator\backend\node_modules\raw-body\index.js:238:16)
+    at done (C:\Users\HOME\student-ID-generator\backend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Users\HOME\student-ID-generator\backend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:518:28)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+[2026-03-09T15:19:00.101Z] POST /api/students/login - Status 401 - Error: Invalid Register Number or Name
+Headers: {
+  "host": "localhost:5000",
+  "connection": "keep-alive",
+  "content-type": "application/json",
+  "accept": "*/*",
+  "accept-language": "*",
+  "sec-fetch-mode": "cors",
+  "user-agent": "node",
+  "accept-encoding": "gzip, deflate",
+  "content-length": "51"
+}
+Body: {
+  "registerNumber": "7376232CB155",
+  "name": "SUBIKSHA"
+}
+Stack: Error: Invalid Register Number or Name
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-09T15:22:47.521Z] UNCAUGHT EXCEPTION: listen EADDRINUSE: address already in use :::5000
+Stack: Error: listen EADDRINUSE: address already in use :::5000
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at Function.listen (C:\Users\HOME\student-ID-generator\backend\node_modules\express\lib\application.js:635:24)
+    at file:///C:/Users/HOME/student-ID-generator/backend/server.js:83:5
+    at ModuleJob.run (node:internal/modules/esm/module_job:329:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+[2026-03-09T15:33:00.651Z] UNHANDLED REJECTION: [object Object]
+
+[2026-03-09T15:33:00.670Z] PUT /api/students/profile - Status 500 - Error: getaddrinfo ENOTFOUND api.cloudinary.com
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "17165",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWU4Yjc5YjhkN2JhNmM1NzJiZTk1ZSIsImlhdCI6MTc3MzA3MDMyOSwiZXhwIjoxNzc1NjYyMzI5fQ.pa85KY3UxL9Lf6Bg7g3mIaa_Uk7igFyvv1IoHRv2tl8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryBBpiQXlN43FOlsyD",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SOWBHARANIGA D",
+  "registerNumber": "7376232CB151",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-10-19",
+  "bloodGroup": "O+",
+  "gender": "Female",
+  "address": "Tirupur",
+  "emergencyContact": "+919363637686",
+  "parentPhone": "+919876543213",
+  "officialEmail": "sowbharniga.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: Error: getaddrinfo ENOTFOUND api.cloudinary.com
+    at GetAddrInfoReqWrap.onlookupall [as oncomplete] (node:dns:122:26)
+
+[2026-03-09T15:34:01.916Z] POST /api/students/login - Status 401 - Error: Invalid Register Number or Name
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "55",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "registerNumber": "7376232CB151",
+  "name": "SOWBHARANIGA"
+}
+Stack: Error: Invalid Register Number or Name
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T03:21:55.000Z] GET /api/students/verify/7376232CB151 - Status 500 - Error: connect ETIMEDOUT 34.93.248.111:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/verify/7376232CB151",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"400-3+yPCW4SZK0zpgzFS0u5g0I/r3s\""
+}
+Body: {}
+Stack: MongoServerSelectionError: connect ETIMEDOUT 34.93.248.111:27017
+    at Topology.selectServer (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\sdam\topology.js:346:38)
+    at async tryOperation (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\operations\execute_operation.js:150:18)
+    at async executeOperation (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\operations\execute_operation.js:80:16)
+    at async FindCursor._initialize (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\cursor\find_cursor.js:62:26)
+    at async FindCursor.cursorInit (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:620:27)
+    at async FindCursor.fetchBatch (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:654:13)
+    at async FindCursor.next (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\cursor\abstract_cursor.js:326:17)
+    at async Collection.findOne (C:\Users\HOME\student-ID-generator\backend\node_modules\mongodb\lib\collection.js:313:24)
+    at async model.Query._findOne (C:\Users\HOME\student-ID-generator\backend\node_modules\mongoose\lib\query.js:2729:15)
+    at async model.Query.exec (C:\Users\HOME\student-ID-generator\backend\node_modules\mongoose\lib\query.js:4662:63)
+
+[2026-03-10T03:27:41.796Z] POST /api/users/login - Status 401 - Error: Invalid email or password
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "55",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "username": "7376232CB156",
+  "password": "SUDHARSHANA Mk"
+}
+Stack: Error: Invalid email or password
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T03:27:49.813Z] POST /api/users/login - Status 401 - Error: Invalid email or password
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "48",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "username": "7376232CB150",
+  "password": "SNEHA t"
+}
+Stack: Error: Invalid email or password
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:27:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T04:19:38.292Z] POST /api/students/signup - Status 400 - Error: Student with this Register Number or Email already exists
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "178",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "registerNumber": "7376232CB150",
+  "name": "SNEHA T",
+  "email": "sneha.cb23@bitsathy.ac.in",
+  "department": "Computer Science and Business Systems",
+  "year": "III",
+  "studentType": "Hosteller"
+}
+Stack: Error: Student with this Register Number or Email already exists
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:127:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:03:39.089Z] GET /api/students/profile - Status 401 - Error: Not authorized, token failed: Not authorized, student not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"3a2-aG7RBN2VhobFWboTvHBu1EyVwjU\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, student not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:03:39.821Z] GET /api/students/profile - Status 401 - Error: Not authorized, token failed: Not authorized, student not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"3a2-aG7RBN2VhobFWboTvHBu1EyVwjU\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, student not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:03:39.905Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: Not authorized, user not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"6b6-M1GHlYyrihOewsAHDdE3DiJlFVg\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, user not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:03:40.030Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: Not authorized, user not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"6b6-M1GHlYyrihOewsAHDdE3DiJlFVg\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, user not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:04:16.454Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: Not authorized, user not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"6b6-M1GHlYyrihOewsAHDdE3DiJlFVg\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, user not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:05:10.722Z] GET /api/students/profile - Status 401 - Error: Not authorized, token failed: Not authorized, student not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"3a2-aG7RBN2VhobFWboTvHBu1EyVwjU\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, student not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:05:11.182Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: Not authorized, user not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"6b6-M1GHlYyrihOewsAHDdE3DiJlFVg\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, user not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:05:53.855Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: Not authorized, user not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"6b5-vhbI+TRIjA/vt8fpRobcBR+wELc\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, user not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-10T08:05:53.893Z] GET /api/students/profile - Status 401 - Error: Not authorized, token failed: Not authorized, student not found
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWVlOGRhYWNlMWVjYjRmZWRkZGI5NCIsImlhdCI6MTc3MzEyMTQ1NCwiZXhwIjoxNzc1NzEzNDU0fQ.RZClHL6vDvuOjFwpcqnW6WRgbpAeFY1eFdm2Db1h5c8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Not:A-Brand\";v=\"99\", \"Google Chrome\";v=\"145\", \"Chromium\";v=\"145\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7",
+  "if-none-match": "W/\"3a2-aG7RBN2VhobFWboTvHBu1EyVwjU\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: Not authorized, student not found
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
