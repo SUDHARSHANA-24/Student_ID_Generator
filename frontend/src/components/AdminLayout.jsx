@@ -48,14 +48,14 @@ const AdminLayout = ({ children }) => {
                             to={item.path}
                             onClick={() => setSidebarOpen(false)}
                             className={({ isActive }) => `
-                                flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors
+                                flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-bold transition-all duration-300 group
                                 ${isActive
-                                    ? 'bg-navy-800 text-white shadow-md'
-                                    : 'text-gray-400 hover:bg-slate-800 hover:text-white'
+                                    ? 'bg-navy-800 text-white shadow-lg border border-white/10'
+                                    : 'text-gray-400 hover:bg-white/5 hover:text-white hover:translate-x-1'
                                 }
                             `}
                         >
-                            <item.icon className="w-5 h-5" />
+                            <item.icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${location.pathname === item.path ? 'text-blue-400' : ''}`} />
                             <span>{item.name}</span>
                         </NavLink>
                     ))}
@@ -74,9 +74,9 @@ const AdminLayout = ({ children }) => {
                     </div>
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 text-red-400 hover:bg-red-600 hover:text-white rounded-lg transition-colors text-sm font-medium"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white rounded-xl transition-all duration-300 text-sm font-bold active:scale-95 shadow-sm"
                     >
-                        <LogOut className="w-4 h-4" />
+                        <LogOut className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                         <span>Sign Out</span>
                     </button>
                 </div>

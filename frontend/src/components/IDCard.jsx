@@ -173,7 +173,7 @@ const IDCard = ({ student, printable = false }) => {
                     </div>
                     <div className="space-y-1">
                         <p className="text-[10px] font-bold text-gray-400 uppercase">Birth Date</p>
-                        <p className="text-xs font-bold text-[#001f3f]">{dob ? new Date(dob).toLocaleDateString() : '01-01-2005'}</p>
+                        <p className="text-xs font-bold text-[#001f3f]">{dob ? new Date(dob).toLocaleDateString('en-GB') : 'N/A'}</p>
                     </div>
                 </div>
 
@@ -191,7 +191,7 @@ const IDCard = ({ student, printable = false }) => {
                         </div>
                         <div>
                             <p className="text-[9px] font-bold text-gray-400 uppercase leading-none mb-0.5">Student Phone</p>
-                            <p className="text-xs font-bold text-gray-800">{emergencyContact || '9876543210'}</p>
+                            <p className="text-xs font-bold text-gray-800">{emergencyContact || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -200,7 +200,7 @@ const IDCard = ({ student, printable = false }) => {
                         </div>
                         <div>
                             <p className="text-[9px] font-bold text-gray-400 uppercase leading-none mb-0.5">Parent Phone</p>
-                            <p className="text-xs font-bold text-gray-800">{parentPhone || '9876543210'}</p>
+                            <p className="text-xs font-bold text-gray-800">{parentPhone || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -208,7 +208,7 @@ const IDCard = ({ student, printable = false }) => {
                             <Mail className="w-3.5 h-3.5 text-blue-600" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-gray-800 lowercase break-words max-w-[180px] leading-tight">{officialEmail || 'student@bitsathy.ac.in'}</p>
+                            <p className="text-[10px] font-bold text-gray-800 lowercase break-words max-w-[180px] leading-tight">{officialEmail || email || 'N/A'}</p>
                         </div>
                     </div>
                 </div>
@@ -317,7 +317,7 @@ const IDCard = ({ student, printable = false }) => {
                     </div>
                     <div className="space-y-1">
                         <p className="text-[10px] font-bold text-gray-400 uppercase">Birth Date</p>
-                        <p className="text-xs font-bold text-[#7f1d1d]">{dob ? new Date(dob).toLocaleDateString() : '01-01-2005'}</p>
+                        <p className="text-xs font-bold text-[#7f1d1d]">{dob ? new Date(dob).toLocaleDateString('en-GB') : 'N/A'}</p>
                     </div>
                 </div>
 
@@ -335,7 +335,7 @@ const IDCard = ({ student, printable = false }) => {
                         </div>
                         <div>
                             <p className="text-[9px] font-bold text-gray-400 uppercase leading-none mb-0.5">Student Phone</p>
-                            <p className="text-xs font-bold text-gray-800">{emergencyContact || '9876543210'}</p>
+                            <p className="text-xs font-bold text-gray-800">{emergencyContact || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -344,7 +344,7 @@ const IDCard = ({ student, printable = false }) => {
                         </div>
                         <div>
                             <p className="text-[9px] font-bold text-gray-400 uppercase leading-none mb-0.5">Parent Phone</p>
-                            <p className="text-xs font-bold text-gray-800">{parentPhone || '9876543210'}</p>
+                            <p className="text-xs font-bold text-gray-800">{parentPhone || 'N/A'}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -352,7 +352,7 @@ const IDCard = ({ student, printable = false }) => {
                             <Mail className="w-3.5 h-3.5 text-red-600" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-bold text-gray-800 lowercase break-words max-w-[180px] leading-tight">{officialEmail || 'student@bitsathy.ac.in'}</p>
+                            <p className="text-[10px] font-bold text-gray-800 lowercase break-words max-w-[180px] leading-tight">{officialEmail || email || 'N/A'}</p>
                         </div>
                     </div>
                 </div>

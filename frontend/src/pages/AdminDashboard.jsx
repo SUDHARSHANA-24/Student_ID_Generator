@@ -8,11 +8,15 @@ import StudentForm from '../components/StudentForm';
 import {
     Search, Eye, Filter, UserPlus, X, Download,
     CheckCircle, XCircle, Loader, Key, FileSpreadsheet,
-    UploadCloud, Users, ChevronRight, Home, LayoutGrid
+    UploadCloud, Users, ChevronRight, Home, LayoutGrid, Upload
 } from 'lucide-react';
+import { useToast } from '../components/Toast';
 
 const AdminDashboard = () => {
     const [students, setStudents] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
+    const [total, setTotal] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -21,7 +25,10 @@ const AdminDashboard = () => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [isPrintMode, setIsPrintMode] = useState(false);
     const [activeView, setActiveView] = useState('overview'); // 'overview', 'register', 'list', 'bulk'
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [stats, setStats] = useState({ Total: 0, Pending: 0, Approved: 0, Rejected: 0 });
 
+    const { addToast } = useToast();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     const fetchStudents = async () => {
@@ -31,20 +38,33 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${userInfo.token}`,
                 },
             };
-            const { data } = await axios.get('/api/students', config);
-            setStudents(data.reverse());
+            // Use debouncedSearchTerm for API call
+            const { data } = await axios.get(`/api/students?pageNumber=${page}&keyword=${debouncedSearchTerm}&status=${filterStatus}`, config);
+            setStudents(data.students);
+            setPages(data.pages);
+            setTotal(data.total);
+            if (data.stats) setStats(data.stats);
         } catch (error) {
             console.error(error);
         }
     };
 
+    // Unified fetch effect
     useEffect(() => {
         if (userInfo) {
             fetchStudents();
-            const interval = setInterval(fetchStudents, 10000); // Poll every 10 seconds for real-time updates
-            return () => clearInterval(interval);
         }
-    }, [userInfo]);
+    }, [userInfo, page, filterStatus, debouncedSearchTerm]);
+
+    // Debounce searchTerm change
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+            setPage(1); // Reset to page 1 for new search
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
 
     const downloadPDF = (student) => {
         if (!student) return;
@@ -54,9 +74,11 @@ const AdminDashboard = () => {
         // Actually, we'll use the same hidden element strategy as StudentDashboard.
         const printableElement = document.getElementById('admin-id-card-printable');
         if (!printableElement) {
-            alert('Error: Printable element not found');
+            addToast('Error: Printable element not found', 'error');
             return;
         }
+
+        addToast('Generating PDF...', 'info');
 
         html2canvas(printableElement, {
             scale: 3,
@@ -75,6 +97,7 @@ const AdminDashboard = () => {
             const y = (pageHeight - imgHeight) / 2;
             pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
             pdf.save(`${student.registerNumber}_ID_Card.pdf`);
+            addToast('ID Card downloaded successfully!', 'success');
         });
     };
 
@@ -87,10 +110,12 @@ const AdminDashboard = () => {
                 },
             };
             await axios.put(`/api/students/${id}/verify`, { status, rejectionReason }, config);
+            addToast(`Student ${status} successfully`, 'success');
             fetchStudents();
             setShowModal(false);
             setRejectionReason('');
         } catch (error) {
+            addToast(error.response?.data?.message || 'Verification failed', 'error');
             console.error(error);
         } finally {
             setIsProcessing(false);
@@ -105,10 +130,10 @@ const AdminDashboard = () => {
         const reader = new FileReader();
         reader.onload = async (evt) => {
             try {
-                const bstr = evt.target.result;
-                const wb = XLSX.read(bstr, { type: 'binary' });
-                const wsname = wb.SheetNames[0];
-                const ws = wb.Sheets[wsname];
+                const fileData = new Uint8Array(evt.target.result);
+                const workbook = XLSX.read(fileData, { type: 'array', cellDates: true });
+                const sheetName = workbook.SheetNames[0];
+                const ws = workbook.Sheets[sheetName];
                 const data = XLSX.utils.sheet_to_json(ws);
 
                 if (data.length === 0) {
@@ -116,14 +141,47 @@ const AdminDashboard = () => {
                     return;
                 }
 
-                // Standardize keys to match backend expectations
+                // Function to find value by checking normalized keys and patterns
+                const getValue = (item, patterns, defaultValue = "N/A", skipCount = 0) => {
+                    const keys = Object.keys(item);
+                    let foundCount = 0;
+                    for (const pattern of patterns) {
+                        const regex = new RegExp(pattern, 'i');
+                        for (const key of keys) {
+                            if (regex.test(key.trim())) {
+                                if (foundCount === skipCount) {
+                                    const value = item[key];
+                                    if (value !== undefined && value !== null && String(value).trim() !== "") {
+                                        return value;
+                                    }
+                                }
+                                foundCount++;
+                            }
+                        }
+                    }
+                    return defaultValue;
+                };
+
                 const studentsData = data.map(item => ({
-                    registerNumber: item['Register Number'] || item['regNo'] || item['RegisterNumber'],
-                    name: item['Name'] || item['name'],
-                    department: item['Department'] || item['dept'] || item['department'],
-                    year: item['Year'] || item['year'],
-                    email: item['Email'] || item['email']
+                    registerNumber: getValue(item, ['Reg.*No', 'Register.*Number'], ""),
+                    name: getValue(item, ['Name', 'Student.*Name', 'Full.*Name'], ""),
+                    department: getValue(item, ['Dept', 'Department', 'Branch'], ""),
+                    year: getValue(item, ['Year', 'Batch'], ""),
+                    email: getValue(item, ['Email', 'Mail.*ID'], ""),
+                    officialEmail: getValue(item, ['Official.*Email', 'Institutional.*Email', 'Email'], "N/A"),
+                    dob: getValue(item, ['DOB', 'Birth', 'Date.*of.*Bi', 'Date.*of.*Birth'], "N/A"),
+                    bloodGroup: getValue(item, ['Blood', 'Group'], "N/A"),
+                    gender: getValue(item, ['Gender', 'Sex'], "N/A"),
+                    photoUrl: getValue(item, ['Photo', 'Image', 'Url'], ""),
+                    address: getValue(item, ['Address', 'Place', 'Native', 'Location', 'City', 'Town'], "N/A"),
+                    emergencyContact: getValue(item, ['Student.*Phone', 'Student.*Mob', 'Mobile', 'Phone', 'Personal.*Phone', 'Emergency.*Contact'], "N/A", 0),
+                    parentPhone: getValue(item, ['Parent.*Phone', 'Parent.*Mob', 'Mobile', 'Phone', 'Father.*Mob', 'Father.*Phone'], "N/A", 1),
+                    studentType: getValue(item, ['Student.*Type', 'Type', 'Scholar', 'Hostel', 'Day'], "Days Scholar"),
+                    validUpto: getValue(item, ['Valid.*Upto', 'Validity', 'Expiry'], "N/A"),
+                    templateType: getValue(item, ['Template', 'Card.*Type'], "4")
                 }));
+
+                console.log('Final Mapped Students Data:', studentsData);
 
                 setIsProcessing(true);
                 const config = {
@@ -132,53 +190,45 @@ const AdminDashboard = () => {
                     },
                 };
                 const { data: response } = await axios.post('/api/students/bulk', { students: studentsData }, config);
-                alert(response.message);
+                addToast(response.message, 'success');
                 fetchStudents();
                 setActiveView('overview');
             } catch (error) {
                 console.error(error);
-                alert('Error processing file');
+                addToast('Error processing file', 'error');
             } finally {
                 setIsProcessing(false);
             }
         };
-        reader.readAsBinaryString(file);
+        reader.readAsArrayBuffer(file);
     };
 
-    const filteredStudents = students.filter(student => {
-        // Only show students who have submitted for verification (Pending, Approved, Rejected)
-        if (student.status === 'Registered') return false;
-
-        const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            student.registerNumber.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus = filterStatus === 'All' || student.status === filterStatus;
-        return matchesSearch && matchesStatus;
-    });
+    const filteredStudents = students;
 
     const MenuCard = ({ title, icon: Icon, color, onClick, subtitle }) => (
         <button
             onClick={onClick}
-            className={`${color} p-8 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center text-white text-center group w-full relative overflow-hidden h-64`}
+            className={`${color} p-8 rounded-[2.5rem] shadow-xl hover:shadow-2xl hover:shadow-slate-300 transition-all duration-500 transform hover:-translate-y-2 flex flex-col items-center justify-center text-white text-center group w-full relative overflow-hidden h-64 border border-white/10`}
         >
-            <div className="absolute top-0 right-0 p-4 opacity-20 group-hover:scale-110 transition-transform">
-                <Icon size={120} />
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-700 pointer-events-none">
+                <Icon size={160} />
             </div>
-            <div className="bg-white rounded-full p-6 mb-6 group-hover:scale-110 transition-transform shadow-inner relative z-10">
-                <Icon size={40} className="text-slate-800" />
+            <div className="bg-white/20 backdrop-blur-md rounded-full p-6 mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-inner relative z-10 border border-white/30">
+                <Icon size={40} className="text-white" />
             </div>
-            <h3 className="text-2xl font-black mb-1 relative z-10">{title}</h3>
+            <h3 className="text-2xl font-black mb-1 relative z-10 drop-shadow-sm">{title}</h3>
             <p className="text-white/80 text-sm font-bold relative z-10">{subtitle}</p>
         </button>
     );
 
     const StatCard = ({ title, value, icon: Icon, color }) => (
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-            <div className={`${color} p-3 rounded-xl text-white`}>
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-slate-200/50 hover:-translate-y-1 transition-all duration-300 flex items-center gap-4 group cursor-default">
+            <div className={`${color} p-3.5 rounded-xl text-white group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg shadow-gray-200/50`}>
                 <Icon size={24} />
             </div>
             <div>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{title}</p>
-                <p className="text-2xl font-black text-slate-800">{value}</p>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-0.5">{title}</p>
+                <p className="text-3xl font-black text-slate-800 tracking-tight">{value}</p>
             </div>
         </div>
     );
@@ -235,7 +285,7 @@ const AdminDashboard = () => {
                 {activeView !== 'overview' && (
                     <button
                         onClick={() => setActiveView('overview')}
-                        className="bg-white hover:bg-gray-50 text-slate-700 px-6 py-2.5 rounded-xl font-bold border border-gray-200 shadow-sm transition-all flex items-center gap-2"
+                        className="bg-white hover:bg-slate-50 text-slate-700 px-6 py-2.5 rounded-xl font-bold border border-gray-200 shadow-sm transition-all flex items-center gap-2 hover:shadow-md hover:-translate-x-1 active:scale-95"
                     >
                         <LayoutGrid size={18} /> Back to Dashboard
                     </button>
@@ -248,25 +298,25 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         <StatCard
                             title="Total Students"
-                            value={students.length}
+                            value={stats.Total}
                             icon={Users}
                             color="bg-navy-800"
                         />
                         <StatCard
                             title="Pending"
-                            value={students.filter(s => s.status === 'Pending').length}
+                            value={stats.Pending}
                             icon={Loader}
                             color="bg-amber-500"
                         />
                         <StatCard
                             title="Approved"
-                            value={students.filter(s => s.status === 'Approved').length}
+                            value={stats.Approved}
                             icon={CheckCircle}
                             color="bg-green-600"
                         />
                         <StatCard
                             title="Rejected"
-                            value={students.filter(s => s.status === 'Rejected').length}
+                            value={stats.Rejected}
                             icon={XCircle}
                             color="bg-red-600"
                         />
@@ -322,20 +372,61 @@ const AdminDashboard = () => {
                         <h2 className="text-3xl font-black text-slate-800 mb-2">Bulk Student Sourcing</h2>
                         <p className="text-gray-500 mb-8 max-w-sm">
                             Upload an Excel file (.xlsx) with columns: <br />
-                            <span className="font-bold text-slate-700">Register Number, Name, Department, Year, Email</span>
+                            <span className="font-bold text-slate-700 text-[10px]">REGISTER NUMBER, NAME, EMAIL, DEPARTMENT, YEAR, DOB, BLOOD GROUP, GENDER, PHOTO URL, ADDRESS, STUDENT PHONE, PARENT PHONE, STUDENT TYPE</span>
                         </p>
 
-                        <label className="w-full bg-navy-800 hover:bg-navy-900 text-white font-black py-4 rounded-2xl cursor-pointer transition-all flex items-center justify-center gap-3 shadow-xl">
-                            <FileSpreadsheet />
-                            {isProcessing ? 'Processing...' : 'Choose Excel File'}
-                            <input
-                                type="file"
-                                className="hidden"
-                                accept=".xlsx, .xls"
-                                onChange={handleFileUpload}
-                                disabled={isProcessing}
-                            />
-                        </label>
+                        <div className="flex flex-col gap-4 w-full">
+                            <label className="w-full bg-navy-800 hover:bg-navy-900 text-white font-black py-5 rounded-[2rem] cursor-pointer transition-all duration-300 flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl hover:-translate-y-1 active:scale-95 border border-white/10 group">
+                                <Upload className="w-6 h-6 group-hover:bounce" />
+                                <span>SELECT EXCEL FILE</span>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    accept=".xlsx, .xls"
+                                    onChange={handleFileUpload}
+                                    disabled={isProcessing}
+                                />
+                            </label>
+
+                            <button
+                                onClick={() => {
+                                    const templateData = [
+                                        {
+                                            "Register Number": "7376232EC163",
+                                            "Name": "PRABHANYA C",
+                                            "Email": "prabhanya.ec23@bitsathy.ac.in",
+                                            "Official Email": "prabhanya.ec25@bitsathy.ac.in",
+                                            "Department": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+                                            "Year": "I",
+                                            "DOB": "2007-07-12",
+                                            "Blood Group": "B-ve",
+                                            "Gender": "Female",
+                                            "Address": "Erode",
+                                            "Student Phone": "9876543213",
+                                            "Parent Phone": "862432453",
+                                            "Student Type": "Hosteller",
+                                            "Photo URL": "uploads\\default-girl.png",
+                                            "Valid Upto": "2023-2027"
+                                        }
+                                    ];
+                                    const ws = XLSX.utils.json_to_sheet(templateData);
+                                    const wb = XLSX.utils.book_new();
+                                    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+                                    XLSX.writeFile(wb, "Student_Import_Template.xlsx");
+                                }}
+                                className="w-full bg-white text-navy-800 font-bold py-3 rounded-[1.5rem] border-2 border-dashed border-navy-200 hover:border-navy-400 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 text-sm"
+                            >
+                                <Download className="w-4 h-4" />
+                                DOWNLOAD SAMPLE TEMPLATE
+                            </button>
+                        </div>
+
+                        <p className="mt-8 text-[11px] text-sky-600 bg-sky-50 p-4 rounded-2xl border border-sky-100 leading-relaxed max-w-sm">
+                            <span className="font-bold uppercase block mb-1">📸 PHOTO TIP:</span> 
+                            To make student photos appear, either use web links (like Cloudinary) 
+                            or copy your photo files directly into the <strong>"backend/uploads"</strong> folder 
+                            on your computer. We'll automatically find them by their filename!
+                        </p>
 
                         <p className="mt-6 text-xs text-gray-400">
                             * Duplicate registration numbers will be skipped automatically.
@@ -351,8 +442,11 @@ const AdminDashboard = () => {
                             <h2 className="text-2xl font-black text-slate-800">Records</h2>
                             <select
                                 value={filterStatus}
-                                onChange={(e) => setFilterStatus(e.target.value)}
-                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none"
+                                onChange={(e) => {
+                                    setFilterStatus(e.target.value);
+                                    setPage(1);
+                                }}
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 text-sm font-bold focus:ring-2 focus:ring-blue-500 outline-none hover:bg-white hover:border-gray-300 transition-all cursor-pointer shadow-sm hover:shadow-md"
                             >
                                 <option value="All">All Status</option>
                                 <option value="Pending">Pending</option>
@@ -364,7 +458,7 @@ const AdminDashboard = () => {
                             {filterStatus === 'Approved' && (
                                 <button
                                     onClick={() => setIsPrintMode(true)}
-                                    className="bg-crimson-600 hover:bg-crimson-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md whitespace-nowrap"
+                                    className="bg-crimson-600 hover:bg-crimson-800 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
                                 >
                                     <FileSpreadsheet size={14} /> 
                                     Enter Print View (All IDs)
@@ -379,7 +473,7 @@ const AdminDashboard = () => {
                                 placeholder="Search by name or reg no..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full transition-all"
+                                className="pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white w-full transition-all hover:bg-white hover:border-gray-300 hover:shadow-sm"
                             />
                         </div>
                     </div>
@@ -397,7 +491,7 @@ const AdminDashboard = () => {
                             <tbody className="divide-y divide-gray-100">
                                 {filteredStudents.length > 0 ? (
                                     filteredStudents.map((student) => (
-                                        <tr key={student._id} className="hover:bg-blue-50/30 transition-colors">
+                                        <tr key={student._id} className="hover:bg-blue-50/50 transition-all duration-300 border-l-4 border-l-transparent hover:border-l-navy-800 group/row">
                                             <td className="p-6">
                                                 <span className="font-black text-slate-900">{student.registerNumber}</span>
                                             </td>
@@ -425,9 +519,9 @@ const AdminDashboard = () => {
                                                         setSelectedStudent(student);
                                                         setShowModal(true);
                                                     }}
-                                                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:text-blue-600 hover:border-blue-200 hover:bg-white transition-all shadow-sm"
+                                                    className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:text-navy-600 hover:border-navy-200 hover:bg-white hover:shadow-md hover:scale-105 active:scale-95 transition-all shadow-sm"
                                                 >
-                                                    <Eye size={14} /> View / Verify
+                                                    <Eye size={14} className="group-hover/row:animate-pulse" /> View / Verify
                                                 </button>
                                             </td>
                                         </tr>
@@ -445,6 +539,40 @@ const AdminDashboard = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination Controls */}
+                    {pages > 1 && (
+                        <div className="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <p className="text-sm font-bold text-gray-400">
+                                Showing <span className="text-slate-900">{students.length}</span> of <span className="text-slate-900">{total}</span> records
+                            </p>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={page === 1}
+                                    className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0 transition-all"
+                                >
+                                    Previous
+                                </button>
+                                {[...Array(pages).keys()].map(x => (
+                                    <button
+                                        key={x + 1}
+                                        onClick={() => setPage(x + 1)}
+                                        className={`w-10 h-10 rounded-xl text-xs font-black transition-all hover:scale-110 active:scale-90 ${page === x + 1 ? 'bg-navy-800 text-white shadow-lg' : 'bg-white text-slate-700 border border-gray-200 hover:border-navy-400 hover:shadow-md'}`}
+                                    >
+                                        {x + 1}
+                                    </button>
+                                ))}
+                                <button
+                                    onClick={() => setPage(prev => Math.min(prev + 1, pages))}
+                                    disabled={page === pages}
+                                    className="px-4 py-2 border border-gray-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-30 disabled:cursor-not-allowed disabled:translate-y-0 transition-all"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -495,6 +623,19 @@ const AdminDashboard = () => {
                                             {selectedStudent.status}
                                         </span>
                                     </div>
+
+                                    {selectedStudent.proofUrl && (
+                                        <div className="pt-4 border-t border-gray-200 mt-2">
+                                            <a 
+                                                href={selectedStudent.proofUrl.startsWith('http') ? selectedStudent.proofUrl : `/${selectedStudent.proofUrl.replace(/\\/g, '/')}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                            >
+                                                <Eye size={16} /> VIEW SUPPORTING PROOF
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {selectedStudent.status && selectedStudent.status.toLowerCase() === 'pending' ? (
@@ -503,20 +644,20 @@ const AdminDashboard = () => {
                                             <button
                                                 onClick={() => handleVerify(selectedStudent._id, 'Approved')}
                                                 disabled={isProcessing}
-                                                className="bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                                                className="bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                                             >
                                                 <CheckCircle size={20} /> Approve
                                             </button>
                                             <button
                                                 onClick={() => {
                                                     if (!rejectionReason) {
-                                                        alert('Please provide a reason for rejection.');
+                                                        addToast('Please provide a reason for rejection.', 'warning');
                                                         return;
                                                     }
                                                     handleVerify(selectedStudent._id, 'Rejected');
                                                 }}
                                                 disabled={isProcessing}
-                                                className="bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                                                className="bg-red-600 hover:bg-red-700 text-white font-black py-4 rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                                             >
                                                 <XCircle size={20} /> Reject
                                             </button>

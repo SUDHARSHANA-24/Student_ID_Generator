@@ -1,0 +1,43 @@
+{
+  "count": 1,
+  "students": [
+    {
+      "studentType": "Days Scholar",
+      "_id": "69bcc313e9dc2465ebf3fb8f",
+      "registerNumber": "7376232EC163",
+      "name": "PRABHANYA C",
+      "email": "prabhanya.ec25@bitsathy.ac.in",
+      "department": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+      "year": "I",
+      "dob": "1970-01-01T00:00:39.423Z",
+      "bloodGroup": "B-ve",
+      "gender": "Female",
+      "photoUrl": "C:\\Users\\HOME\\Pictures\\Screenshots\\Screenshot 2026-01-02 222802.png",
+      "address": "Erode",
+      "officialEmail": "prabhanya.ec25@bitsathy.ac.in",
+      "templateType": "4",
+      "status": "Approved",
+      "source": "Bulk",
+      "approvalDate": "2026-03-20T03:53:09.314Z",
+      "history": [
+        {
+          "status": "Approved",
+          "message": "Student data imported via Bulk Sourcing",
+          "updatedBy": "Admin",
+          "timestamp": "2026-03-20T03:46:27.456Z",
+          "_id": "69bcc313e9dc2465ebf3fb90"
+        },
+        {
+          "status": "Approved",
+          "message": "Student data updated via Bulk Sourcing",
+          "updatedBy": "Admin",
+          "timestamp": "2026-03-20T03:53:09.314Z",
+          "_id": "69bcc4a55af36704b92e17b7"
+        }
+      ],
+      "createdAt": "2026-03-20T03:46:27.477Z",
+      "updatedAt": "2026-03-20T03:53:09.316Z",
+      "__v": 1
+    }
+  ]
+}

@@ -590,3 +590,221 @@ Stack: Error: Not authorized, token failed: Not authorized, student not found
     at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:58:19
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
 
+[2026-03-20T05:25:11.608Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+  "if-none-match": "W/\"6b5-vhbI+TRIjA/vt8fpRobcBR+wELc\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+
+[2026-03-20T05:25:15.071Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:549:9)
+    at process.processTimers (node:internal/timers:523:7)
+
+[2026-03-20T05:25:15.666Z] GET /api/students - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+  "if-none-match": "W/\"2b50-7Om+F7wJGH5aU/zyhvvdiW5Wwpo\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:27:19
+
+[2026-03-20T05:25:35.387Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+
+[2026-03-20T05:25:36.613Z] GET /api/students - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:27:19
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processTimers (node:internal/timers:520:9)
+
+[2026-03-20T05:25:46.003Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+
+[2026-03-20T05:26:17.661Z] GET /api/students - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+  "if-none-match": "W/\"2b50-7Om+F7wJGH5aU/zyhvvdiW5Wwpo\""
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/middleware/authMiddleware.js:27:19
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:549:9)
+    at process.processTimers (node:internal/timers:523:7)
+
+[2026-03-20T05:26:17.900Z] GET /api/notifications - Status 401 - Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OGQ3MTg2M2RkZWY1Zjg0YzEyN2MxMyIsImlhdCI6MTc3Mzk3OTcyOSwiZXhwIjoxNzc2NTcxNzI5fQ.bavi0tSS_DRsJVizKa0sVlxJLZ37tNLmwbRyuL7KPwk",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "sec-ch-ua-mobile": "?0",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/admin-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {}
+Stack: Error: Not authorized, token failed: connect ETIMEDOUT 34.93.120.213:27017
+    at file:///C:/Users/HOME/student-ID-generator/backend/routes/notificationRoutes.js:46:19
+
+[2026-03-20T06:28:21.297Z] UNHANDLED REJECTION: [object Object]
+
+[2026-03-20T06:28:21.924Z] PUT /api/students/profile - Status 500 - Error: Image file format pdf not allowed
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "218590",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3Mzk4ODA2MSwiZXhwIjoxNzc2NTgwMDYxfQ.TCclfKuUq5m5G2VvWX-AvVqnulaweyOS4oBVyrzVIW8",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryP6I2rAcDcuJcjt36",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "B+",
+  "gender": "",
+  "address": "Gugai, Salem",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: undefined
+

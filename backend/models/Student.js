@@ -31,7 +31,8 @@ const studentSchema = mongoose.Schema({
             'ARTIFICIAL INTELLIGENCE AND MACHINE LEARNING',
             'ARTIFICIAL INTELLIGENCE AND DATA SCIENCE',
             'COMPUTER TECHNOLOGY',
-            'COMPUTER SCIENCE AND DESIGN'
+            'COMPUTER SCIENCE AND DESIGN',
+            'ELECTRONICS AND COMMUNICATION ENGINEERING'
         ]
     },
     year: {
@@ -56,6 +57,9 @@ const studentSchema = mongoose.Schema({
         type: String
     },
     address: {
+        type: String
+    },
+    proofUrl: {
         type: String
     },
     emergencyContact: {

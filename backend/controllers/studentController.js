@@ -93,8 +93,78 @@ const createStudent = asyncHandler(async (req, res) => {
 // @route   GET /api/students
 // @access  Private/Admin
 const getStudents = asyncHandler(async (req, res) => {
-    const students = await Student.find({});
-    res.json(students);
+    const pageSize = 10;
+    const page = Number(req.query.pageNumber) || 1;
+    const status = req.query.status && req.query.status !== 'All' ? req.query.status : null;
+    const keyword = req.query.keyword
+        ? {
+            $or: [
+                { name: { $regex: req.query.keyword, $options: 'i' } },
+                { registerNumber: { $regex: req.query.keyword, $options: 'i' } },
+            ],
+        }
+        : {};
+
+    const query = { ...keyword };
+    if (status) query.status = status;
+
+    const count = await Student.countDocuments(query);
+    
+    // Custom sort: Pending first (0), Registered (1), then Approved/Rejected/others (2+), all sorted by updatedAt
+    const students = await Student.aggregate([
+        { $match: query },
+        {
+            $addFields: {
+                statusRank: {
+                    $switch: {
+                        branches: [
+                            { case: { $eq: ["$status", "Pending"] }, then: 0 },
+                            { case: { $eq: ["$status", "Registered"] }, then: 1 },
+                            { case: { $eq: ["$status", "Approved"] }, then: 2 },
+                            { case: { $eq: ["$status", "Rejected"] }, then: 3 },
+                            { case: { $eq: ["$status", "Discontinued"] }, then: 4 }
+                        ],
+                        default: 10
+                    }
+                }
+            }
+        },
+        { $sort: { statusRank: 1, updatedAt: -1 } },
+        { $skip: (page - 1) * pageSize },
+        { $limit: pageSize }
+    ]);
+
+    // Get global stats
+    const stats = await Student.aggregate([
+        {
+            $group: {
+                _id: '$status',
+                count: { $sum: 1 },
+            },
+        },
+    ]);
+
+    const statsObj = {
+        Total: 0,
+        Pending: 0,
+        Approved: 0,
+        Rejected: 0,
+        Discontinued: 0,
+        Registered: 0
+    };
+
+    stats.forEach(stat => {
+        if (stat._id) statsObj[stat._id] = stat.count;
+        statsObj.Total += stat.count;
+    });
+
+    res.json({ 
+        students, 
+        page, 
+        pages: Math.ceil(count / pageSize), 
+        total: count,
+        stats: statsObj 
+    });
 });
 
 // @desc    Get student profile
@@ -121,7 +191,15 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
         const changedFields = [];
         const transitions = [];
 
-        if (req.body.dob && req.body.dob !== student.dob?.toISOString()?.split('T')[0]) {
+        if (req.body.name && req.body.name.toUpperCase() !== student.name) {
+            student.name = req.body.name.toUpperCase();
+            changedFields.push('Name');
+        }
+        if (req.body.department && req.body.department.toUpperCase() !== student.department) {
+            student.department = req.body.department.toUpperCase();
+            changedFields.push('Department');
+        }
+        if (req.body.dob && req.body.dob !== (student.dob ? student.dob.toISOString().split('T')[0] : '')) {
             student.dob = req.body.dob;
             changedFields.push('Date of Birth');
         }
@@ -171,26 +249,42 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
             student.templateType = req.body.studentType === 'Hosteller' ? '3' : '4';
         }
 
-        if (req.file) {
-            student.photoUrl = req.file.path; // Cloudinary secure_url
+        // Handle File Uploads (Photo and Proof)
+        const photoFile = req.files?.photo ? req.files.photo[0] : null;
+        const proofFile = req.files?.proof ? req.files.proof[0] : null;
+
+        if (photoFile) {
+            student.photoUrl = photoFile.path;
             changedFields.push('Photo');
         }
 
-        // Combine standard field changes and specific transitions
-        const allChanges = [...transitions];
-        if (changedFields.length > 0) {
-            allChanges.push(`Updated: ${changedFields.join(', ')}`);
+        if (proofFile) {
+            student.proofUrl = proofFile.path;
+            // No need to add to changedFields, it will be added as suffix
         }
 
         // Only log and update if there are actual changes
-        if (allChanges.length > 0) {
+        const dataFieldsChanged = transitions.length > 0 || changedFields.length > 0;
+        
+        if (dataFieldsChanged || proofFile) {
+            // Requirement check: If already approved and changing data, MUST submit proof
+            if (student.status === 'Approved' && dataFieldsChanged && !proofFile && !student.proofUrl) {
+                res.status(400);
+                throw new Error('Please submit a proof document for the changes to be approved.');
+            }
+
+            const allChangesLog = [...transitions];
+            if (changedFields.length > 0) {
+                allChangesLog.push(`Updated: ${changedFields.join(', ')}`);
+            }
+
             student.status = 'Pending';
             student.rejectionReason = undefined;
             student.source = 'Student';
 
             student.history.push({
                 status: 'Pending',
-                message: allChanges.join(' | '),
+                message: allChangesLog.join(' | ') + (proofFile ? ' [Proof Attached]' : ''),
                 updatedBy: 'Student',
                 timestamp: Date.now()
             });
@@ -289,45 +383,171 @@ const bulkCreateStudents = asyncHandler(async (req, res) => {
 
     for (const studentData of students) {
         try {
-            let { registerNumber, name, department, year, email } = studentData;
+            console.log('Processing student data:', studentData);
+            let { 
+                registerNumber, name, department, year, email, dob, 
+                bloodGroup, gender, photoUrl, address, emergencyContact, 
+                parentPhone, studentType, officialEmail, validUpto, templateType 
+            } = studentData;
 
-            if (registerNumber) registerNumber = registerNumber.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-            if (name) name = name.toUpperCase();
-            if (department) department = department.trim().toUpperCase();
-            if (year) year = year.trim().toUpperCase();
+            if (registerNumber) registerNumber = String(registerNumber).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+            if (name) name = String(name).toUpperCase();
+            if (department) department = String(department).trim().toUpperCase();
+            if (year) year = String(year).trim().toUpperCase();
 
-            const studentExists = await Student.findOne({ registerNumber });
-            if (studentExists) {
-                errors.push({ registerNumber, error: 'Student already exists' });
-                continue;
+            // Handle Excel serial dates or "N/A"
+            if (dob && dob !== "N/A") {
+                if (typeof dob === 'number' || !isNaN(Number(dob))) {
+                    const serialNum = Number(dob);
+                    if (serialNum < 1000000) {
+                        const excelEpoch = new Date(1899, 11, 30);
+                        const millisecondsInDay = 24 * 60 * 60 * 1000;
+                        dob = new Date(excelEpoch.getTime() + serialNum * millisecondsInDay);
+                    }
+                } else {
+                    // Try parsing as string
+                    let parsedDate = new Date(dob);
+                    if (isNaN(parsedDate.getTime())) {
+                        // Try DD/MM/YYYY format
+                        const parts = String(dob).split(/[\/\-]/);
+                        if (parts.length === 3) {
+                            if (parts[0].length === 4) { // YYYY-MM-DD
+                                parsedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+                            } else { // DD-MM-YYYY or MM-DD-YYYY
+                                // Guessing DD/MM/YYYY
+                                parsedDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                            }
+                        }
+                    }
+                    
+                    if (!isNaN(parsedDate.getTime())) {
+                        dob = parsedDate;
+                    } else {
+                        dob = undefined;
+                    }
+                }
+            } else {
+                dob = undefined;
             }
 
-            const student = await Student.create({
-                registerNumber,
+            // Format phone numbers to +91 format, handle "N/A"
+            const formatPhone = (phone) => {
+                if (!phone || phone === "N/A") return undefined;
+                let cleaned = String(phone).replace(/\D/g, '');
+                if (cleaned.length === 10) return '+91' + cleaned;
+                if (cleaned.length === 12 && cleaned.startsWith('91')) return '+' + cleaned;
+                return phone;
+            };
+
+            emergencyContact = formatPhone(emergencyContact);
+            parentPhone = formatPhone(parentPhone);
+
+            // Handle Gender
+            if (!gender || gender === "N/A") {
+                gender = undefined; 
+            } else {
+                const g = gender.toLowerCase();
+                if (g.startsWith('m')) gender = 'Male';
+                else if (g.startsWith('f')) gender = 'Female';
+            }
+
+            // Clean up photoUrl if it's a local Windows path
+            if (photoUrl && photoUrl !== "" && (photoUrl.includes('\\') || photoUrl.includes(':'))) {
+                const parts = photoUrl.split(/[\\\/]/);
+                const filename = parts[parts.length - 1];
+                if (filename && filename !== "") {
+                    photoUrl = `uploads\\${filename}`;
+                }
+            }
+
+            // Handle Gender-based default photo if photoUrl is still missing or dummy
+            if (!photoUrl || photoUrl === "" || photoUrl === "N/A") {
+                if (gender === 'Male') {
+                    photoUrl = 'uploads\\default-boy.png';
+                } else if (gender === 'Female') {
+                    photoUrl = 'uploads\\default-girl.png';
+                }
+            }
+
+            // Normalize Student Type
+            if (!studentType || studentType === "N/A") {
+                studentType = 'Days Scholar';
+            } else {
+                const lowerType = String(studentType).toLowerCase();
+                if (lowerType.includes('hostel')) studentType = 'Hosteller';
+                else if (lowerType.includes('day') || lowerType.includes('scholar')) studentType = 'Days Scholar';
+                else studentType = 'Days Scholar';
+            }
+
+            // Handle validUpto
+            if (!validUpto || validUpto === "N/A") {
+                const yearToValidUpto = {
+                    'I': '2025-2029',
+                    'II': '2024-2028',
+                    'III': '2023-2027',
+                    'IV': '2022-2026'
+                };
+                validUpto = yearToValidUpto[year] || '2024-2028';
+            }
+
+            const existingStudent = await Student.findOne({ registerNumber });
+            
+            const commonData = {
                 name,
                 department,
                 year,
                 email,
-                status: 'Approved', // Bulk sourced students are usually already approved
+                officialEmail: (officialEmail && officialEmail !== "N/A") ? officialEmail : email,
+                dob,
+                bloodGroup: bloodGroup || "N/A",
+                gender,
+                photoUrl,
+                address: address || "N/A",
+                emergencyContact,
+                parentPhone,
+                studentType,
+                validUpto,
+                templateType: templateType === '3' ? '3' : '4',
+                status: 'Approved',
                 source: 'Bulk',
-                approvalDate: Date.now(),
-                history: [{
+                approvalDate: Date.now()
+            };
+
+            if (existingStudent) {
+                console.log(`Updating existing student: ${registerNumber}`);
+                Object.assign(existingStudent, commonData);
+                
+                existingStudent.history.push({
                     status: 'Approved',
-                    message: 'Student data imported via Bulk Sourcing',
+                    message: 'Student data updated via Bulk Sourcing',
                     updatedBy: 'Admin',
                     timestamp: Date.now()
-                }]
-            });
-
-            createdStudents.push(student);
+                });
+                
+                await existingStudent.save();
+                createdStudents.push(existingStudent);
+            } else {
+                console.log(`Creating new student: ${registerNumber}`);
+                const student = await Student.create({
+                    registerNumber,
+                    ...commonData,
+                    history: [{
+                        status: 'Approved',
+                        message: 'Student data imported via Bulk Sourcing',
+                        updatedBy: 'Admin',
+                        timestamp: Date.now()
+                    }]
+                });
+                createdStudents.push(student);
+            }
         } catch (error) {
+            console.error(`Error processing student ${studentData.registerNumber}:`, error);
             errors.push({ registerNumber: studentData.registerNumber, error: error.message });
         }
     }
 
     res.status(201).json({
-        message: `Successfully created ${createdStudents.length} students`,
-        createdCount: createdStudents.length,
+        message: `Successfully processed ${createdStudents.length} students`,
         errors
     });
 });

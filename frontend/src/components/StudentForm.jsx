@@ -20,6 +20,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         studentType: existingStudent?.studentType || ''
     });
     const [photo, setPhoto] = useState(null);
+    const [proof, setProof] = useState(null);
     const [loading, setLoading] = useState(false);
     const { addToast } = useToast();
 
@@ -61,7 +62,11 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
     };
 
     const handleFileChange = (e) => {
-        setPhoto(e.target.files[0]);
+        if (e.target.name === 'proof') {
+            setProof(e.target.files[0]);
+        } else {
+            setPhoto(e.target.files[0]);
+        }
     };
 
     const isRealPhoto = (url) => {
@@ -130,6 +135,9 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         if (photo) {
             data.append('photo', photo);
         }
+        if (proof) {
+            data.append('proof', proof);
+        }
 
         try {
             const config = {
@@ -167,6 +175,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     studentType: 'Days Scholar'
                 });
                 setPhoto(null);
+                setProof(null);
             }
             if (onSuccess) onSuccess();
         } catch (error) {
@@ -244,6 +253,7 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 <option value="ARTIFICIAL INTELLIGENCE AND DATA SCIENCE">ARTIFICIAL INTELLIGENCE AND DATA SCIENCE</option>
                                 <option value="COMPUTER TECHNOLOGY">COMPUTER TECHNOLOGY</option>
                                 <option value="COMPUTER SCIENCE AND DESIGN">COMPUTER SCIENCE AND DESIGN</option>
+                                <option value="ELECTRONICS AND COMMUNICATION ENGINEERING">ELECTRONICS AND COMMUNICATION ENGINEERING</option>
                             </select>
                         </div>
                     </div>
@@ -412,6 +422,21 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* Proof of Changes - Show only if student is already approved and trying to edit */}
+                {isStudentView && existingStudent?.status === 'Approved' && (
+                    <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100 flex flex-col sm:flex-row items-center gap-4">
+                        <div className="flex-1 text-center sm:text-left">
+                            <h4 className="text-sm font-bold text-orange-800">Proof of Changes Required</h4>
+                            <p className="text-[11px] text-orange-600">Since your ID is already approved, please upload a proof document (PDF/Image) for the changes.</p>
+                        </div>
+                        <label className="flex items-center justify-center gap-2 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl cursor-pointer transition-all w-full sm:w-auto">
+                            <Upload className="w-4 h-4" />
+                            {proof ? 'File Selected' : 'Choose Proof'}
+                            <input type="file" name="proof" onChange={handleFileChange} className="hidden" accept=".pdf,image/*" />
+                        </label>
+                    </div>
+                )}
 
                 <div className="pt-6 border-t border-gray-100">
                     <button type="submit" disabled={loading} className="w-full btn-primary disabled:opacity-70 disabled:cursor-not-allowed py-3 text-base">
