@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import html2canvas from 'html2canvas';
@@ -203,7 +203,17 @@ const AdminDashboard = () => {
         reader.readAsArrayBuffer(file);
     };
 
-    const filteredStudents = students;
+    // Dynamic filtering on top of server results for instant UI feedback
+    const filteredStudents = useMemo(() => {
+        if (!searchTerm.trim()) return students;
+        const term = searchTerm.toLowerCase().trim();
+        return students.filter(student =>
+            (student.name?.toLowerCase().includes(term)) ||
+            (student.registerNumber?.toLowerCase().includes(term)) ||
+            (student.department?.toLowerCase().includes(term)) ||
+            (student.officialEmail?.toLowerCase().includes(term))
+        );
+    }, [searchTerm, students]);
 
     const MenuCard = ({ title, icon: Icon, color, onClick, subtitle }) => (
         <button
@@ -544,7 +554,7 @@ const AdminDashboard = () => {
                     {pages > 1 && (
                         <div className="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50/50">
                             <p className="text-sm font-bold text-gray-400">
-                                Showing <span className="text-slate-900">{students.length}</span> of <span className="text-slate-900">{total}</span> records
+                                Showing <span className="text-slate-900">{filteredStudents.length}</span> of <span className="text-slate-900">{total}</span> records
                             </p>
                             <div className="flex gap-2">
                                 <button

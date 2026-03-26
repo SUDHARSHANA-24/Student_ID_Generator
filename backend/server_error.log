@@ -808,3 +808,84 @@ Body: {
 }
 Stack: undefined
 
+[2026-03-23T05:24:17.895Z] POST /api/students/login - Status 401 - Error: Invalid Register Number or Name
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "54",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "registerNumber": "7376232CB156",
+  "name": "SUDHARSHANA"
+}
+Stack: Error: Invalid Register Number or Name
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-23T05:24:34.480Z] POST /api/students/login - Status 401 - Error: Invalid Register Number or Name
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "49",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "registerNumber": "7376232CB156",
+  "name": "SUDHAR"
+}
+Stack: Error: Invalid Register Number or Name
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-23T05:26:35.318Z] POST /api/students/login - Status 401 - Error: Invalid Register Number or Name
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "57",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "application/json",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "registerNumber": "7376232CB156",
+  "name": "SUDHARSHANA MK"
+}
+Stack: Error: Invalid Register Number or Name
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
