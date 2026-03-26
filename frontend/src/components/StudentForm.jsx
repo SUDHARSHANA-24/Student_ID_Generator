@@ -20,33 +20,56 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         studentType: existingStudent?.studentType || ''
     });
     const [photo, setPhoto] = useState(null);
-    const [proof, setProof] = useState(null);
+    const [aadhaarProof, setAadhaarProof] = useState(null);
+    const [birthCertProof, setBirthCertProof] = useState(null);
+    const [admissionProof, setAdmissionProof] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
     const { addToast } = useToast();
 
     const userInfo = JSON.parse(localStorage.getItem(isStudentView ? 'studentInfo' : 'userInfo'));
 
-    // Sync form data when existingStudent changes
+    // Only populate form from existingStudent once to prevent edits from being wiped
     useEffect(() => {
-        if (existingStudent) {
-            setFormData(prev => ({
-                ...prev,
-                name: existingStudent.name || prev.name,
-                registerNumber: existingStudent.registerNumber || prev.registerNumber,
-                department: existingStudent.department || prev.department,
-                year: existingStudent.year || prev.year,
-                dob: existingStudent.dob ? new Date(existingStudent.dob).toISOString().split('T')[0] : prev.dob,
-                bloodGroup: existingStudent.bloodGroup || prev.bloodGroup,
+        if (existingStudent && !isInitialized) {
+            setFormData({
+                name: existingStudent.name || '',
+                registerNumber: existingStudent.registerNumber || '',
+                department: existingStudent.department || '',
+                year: existingStudent.year || '',
+                dob: existingStudent.dob ? new Date(existingStudent.dob).toISOString().split('T')[0] : '',
+                bloodGroup: existingStudent.bloodGroup || '',
                 gender: existingStudent.gender || '',
-                address: existingStudent.address || prev.address,
-                emergencyContact: existingStudent.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : prev.emergencyContact,
-                parentPhone: existingStudent.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : prev.parentPhone,
-                officialEmail: existingStudent.officialEmail || existingStudent.email || prev.officialEmail,
-                validUpto: existingStudent.validUpto || prev.validUpto,
-                studentType: existingStudent.studentType || prev.studentType
-            }));
+                address: existingStudent.address || '',
+                emergencyContact: existingStudent.emergencyContact ? existingStudent.emergencyContact.replace(/^\+91/, '') : '',
+                parentPhone: existingStudent.parentPhone ? existingStudent.parentPhone.replace(/^\+91/, '') : '',
+                officialEmail: existingStudent.officialEmail || existingStudent.email || '',
+                validUpto: existingStudent.validUpto || '',
+                studentType: existingStudent.studentType || ''
+            });
+            setIsInitialized(true);
         }
-    }, [existingStudent]);
+    }, [existingStudent, isInitialized]);
+    
+    // Helper to check if a field has been modified from initial value
+    const isModified = (field) => {
+        if (!existingStudent) return false;
+        
+        let initialValue = existingStudent[field] || '';
+        let currentValue = formData[field] || '';
+
+        if (field === 'dob') {
+            initialValue = initialValue ? new Date(initialValue).toISOString().split('T')[0] : '';
+        } else if (field === 'emergencyContact' || field === 'parentPhone') {
+            initialValue = initialValue.replace(/^\+91/, '');
+        }
+        
+        return String(initialValue).trim().toUpperCase() !== String(currentValue).trim().toUpperCase();
+    };
+
+    const needsAadhaar = isModified('name') || isModified('address');
+    const needsBirthCert = isModified('dob');
+    const needsAdmissionReceipt = isModified('registerNumber') || isModified('department') || isModified('studentType') || isModified('emergencyContact');
 
     const handleInputChange = (e) => {
         let value = e.target.value;
@@ -62,11 +85,11 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
     };
 
     const handleFileChange = (e) => {
-        if (e.target.name === 'proof') {
-            setProof(e.target.files[0]);
-        } else {
-            setPhoto(e.target.files[0]);
-        }
+        const file = e.target.files[0];
+        if (e.target.name === 'aadhaarProof') setAadhaarProof(file);
+        else if (e.target.name === 'birthCertProof') setBirthCertProof(file);
+        else if (e.target.name === 'admissionProof') setAdmissionProof(file);
+        else setPhoto(file);
     };
 
     const isRealPhoto = (url) => {
@@ -135,9 +158,9 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
         if (photo) {
             data.append('photo', photo);
         }
-        if (proof) {
-            data.append('proof', proof);
-        }
+        if (aadhaarProof) data.append('aadhaarProof', aadhaarProof);
+        if (birthCertProof) data.append('birthCertProof', birthCertProof);
+        if (admissionProof) data.append('admissionProof', admissionProof);
 
         try {
             const config = {
@@ -175,7 +198,9 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     studentType: 'Days Scholar'
                 });
                 setPhoto(null);
-                setProof(null);
+                setAadhaarProof(null);
+                setBirthCertProof(null);
+                setAdmissionProof(null);
             }
             if (onSuccess) onSuccess();
         } catch (error) {
@@ -423,18 +448,55 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                     </div>
                 </div>
 
-                {/* Proof of Changes - Show only if student is already approved and trying to edit */}
-                {isStudentView && existingStudent?.status === 'Approved' && (
-                    <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100 flex flex-col sm:flex-row items-center gap-4">
-                        <div className="flex-1 text-center sm:text-left">
-                            <h4 className="text-sm font-bold text-orange-800">Proof of Changes Required</h4>
-                            <p className="text-[11px] text-orange-600">Since your ID is already approved, please upload a proof document (PDF/Image) for the changes.</p>
+                {/* Proof Requirements - Dynamically show based on changes */}
+                {isStudentView && (needsAadhaar || needsBirthCert || needsAdmissionReceipt) && (
+                    <div className="space-y-4 border-t pt-6 mt-6">
+                        <div className="flex items-center gap-2 mb-2">
+                             <CreditCard className="w-5 h-5 text-blue-600" />
+                             <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest">Required Verification Documents</h3>
                         </div>
-                        <label className="flex items-center justify-center gap-2 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold rounded-xl cursor-pointer transition-all w-full sm:w-auto">
-                            <Upload className="w-4 h-4" />
-                            {proof ? 'File Selected' : 'Choose Proof'}
-                            <input type="file" name="proof" onChange={handleFileChange} className="hidden" accept=".pdf,image/*" />
-                        </label>
+                        
+                        {needsAadhaar && (
+                            <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row items-center gap-4 transition-all ${aadhaarProof ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
+                                <div className="flex-1 text-center sm:text-left">
+                                    <h4 className={`text-xs font-black uppercase tracking-widest ${aadhaarProof ? 'text-green-700' : 'text-red-700'}`}>Aadhaar Card (REQUIRED)</h4>
+                                    <p className={`text-[9px] font-bold leading-relaxed ${aadhaarProof ? 'text-green-600' : 'text-red-600'}`}>Verify Name / Address changes</p>
+                                </div>
+                                <label className={`flex items-center justify-center gap-2 px-6 py-2 rounded-xl cursor-pointer transition-all w-full sm:w-auto text-[10px] font-black ${aadhaarProof ? 'bg-green-600 text-white' : 'bg-red-600 text-white shadow-lg'}`}>
+                                    <Upload className="w-4 h-4" />
+                                    {aadhaarProof ? 'REPLACE AADHAAR' : 'UPLOAD AADHAAR'}
+                                    <input type="file" name="aadhaarProof" onChange={handleFileChange} className="hidden" accept="image/*,.pdf" />
+                                </label>
+                            </div>
+                        )}
+
+                        {needsBirthCert && (
+                            <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row items-center gap-4 transition-all ${birthCertProof ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
+                                <div className="flex-1 text-center sm:text-left">
+                                    <h4 className={`text-xs font-black uppercase tracking-widest ${birthCertProof ? 'text-green-700' : 'text-red-700'}`}>Birth Certificate (REQUIRED)</h4>
+                                    <p className={`text-[9px] font-bold leading-relaxed ${birthCertProof ? 'text-green-600' : 'text-red-600'}`}>Verify Date of Birth changes</p>
+                                </div>
+                                <label className={`flex items-center justify-center gap-2 px-6 py-2 rounded-xl cursor-pointer transition-all w-full sm:w-auto text-[10px] font-black ${birthCertProof ? 'bg-green-600 text-white' : 'bg-red-600 text-white shadow-lg'}`}>
+                                    <Upload className="w-4 h-4" />
+                                    {birthCertProof ? 'REPLACE BIRTH CERT' : 'UPLOAD BIRTH CERT'}
+                                    <input type="file" name="birthCertProof" onChange={handleFileChange} className="hidden" accept="image/*,.pdf" />
+                                </label>
+                            </div>
+                        )}
+
+                        {needsAdmissionReceipt && (
+                            <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row items-center gap-4 transition-all ${admissionProof ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'}`}>
+                                <div className="flex-1 text-center sm:text-left">
+                                    <h4 className={`text-xs font-black uppercase tracking-widest ${admissionProof ? 'text-green-700' : 'text-red-700'}`}>Admission Receipt (REQUIRED)</h4>
+                                    <p className={`text-[9px] font-bold leading-relaxed ${admissionProof ? 'text-green-600' : 'text-red-600'}`}>Verify Reg No / Dept / Mobile / Type</p>
+                                </div>
+                                <label className={`flex items-center justify-center gap-2 px-6 py-2 rounded-xl cursor-pointer transition-all w-full sm:w-auto text-[10px] font-black ${admissionProof ? 'bg-green-600 text-white' : 'bg-red-600 text-white shadow-lg'}`}>
+                                    <Upload className="w-4 h-4" />
+                                    {admissionProof ? 'REPLACE RECEIPT' : 'UPLOAD RECEIPT'}
+                                    <input type="file" name="admissionProof" onChange={handleFileChange} className="hidden" accept="image/*,.pdf" />
+                                </label>
+                            </div>
+                        )}
                     </div>
                 )}
 

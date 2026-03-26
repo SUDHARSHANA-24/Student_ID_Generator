@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Student from '../models/Student.js';
 import Notification from '../models/Notification.js';
+import { performOCRVerification } from '../utils/ocrUtil.js';
 
 // @desc    Register a new student (Admin only)
 // @route   POST /api/students
@@ -249,26 +250,33 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
             student.templateType = req.body.studentType === 'Hosteller' ? '3' : '4';
         }
 
-        // Handle File Uploads (Photo and Proof)
+        // Handle File Uploads (Photo and Specific Proofs)
         const photoFile = req.files?.photo ? req.files.photo[0] : null;
-        const proofFile = req.files?.proof ? req.files.proof[0] : null;
+        const aadhaarProof = req.files?.aadhaarProof ? req.files.aadhaarProof[0] : null;
+        const birthCertProof = req.files?.birthCertProof ? req.files.birthCertProof[0] : null;
+        const admissionProof = req.files?.admissionProof ? req.files.admissionProof[0] : null;
 
         if (photoFile) {
             student.photoUrl = photoFile.path;
             changedFields.push('Photo');
         }
 
-        if (proofFile) {
-            student.proofUrl = proofFile.path;
-            // No need to add to changedFields, it will be added as suffix
+        const uploadedProofs = [];
+        if (aadhaarProof) uploadedProofs.push(aadhaarProof.path);
+        if (birthCertProof) uploadedProofs.push(birthCertProof.path);
+        if (admissionProof) uploadedProofs.push(admissionProof.path);
+
+        if (uploadedProofs.length > 0) {
+            student.proofUrls = uploadedProofs;
+            student.proofUrl = uploadedProofs[0]; // For backward compatibility
         }
 
         // Only log and update if there are actual changes
         const dataFieldsChanged = transitions.length > 0 || changedFields.length > 0;
         
-        if (dataFieldsChanged || proofFile) {
+        if (dataFieldsChanged || uploadedProofs.length > 0) {
             // Requirement check: If already approved and changing data, MUST submit proof
-            if (student.status === 'Approved' && dataFieldsChanged && !proofFile && !student.proofUrl) {
+            if (student.status === 'Approved' && dataFieldsChanged && uploadedProofs.length === 0 && !student.proofUrl && (!student.proofUrls || student.proofUrls.length === 0)) {
                 res.status(400);
                 throw new Error('Please submit a proof document for the changes to be approved.');
             }
@@ -284,20 +292,77 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
 
             student.history.push({
                 status: 'Pending',
-                message: allChangesLog.join(' | ') + (proofFile ? ' [Proof Attached]' : ''),
+                message: allChangesLog.join(' | ') + (uploadedProofs.length > 0 ? ` [Proof Attached: ${uploadedProofs.length} files]` : ''),
                 updatedBy: 'Student',
                 timestamp: Date.now()
             });
-
             try {
+                // Perform OCR Verification if proofs are attached
+                if (uploadedProofs.length > 0) {
+                    const fieldsToVerify = {
+                        name: req.body.name || student.name,
+                        registerNumber: student.registerNumber,
+                        dob: req.body.dob || (student.dob ? student.dob.toISOString().split('T')[0] : ''),
+                        address: req.body.address || student.address,
+                        department: req.body.department || student.department,
+                        studentType: req.body.studentType || student.studentType,
+                        mobile: req.body.emergencyContact || student.emergencyContact
+                    };
+
+                    let allVerifiedFields = new Set();
+                    let allOcrText = [];
+
+                    for (const filePath of uploadedProofs) {
+                        const { verifiedFields, ocrText } = await performOCRVerification(filePath, fieldsToVerify);
+                        verifiedFields.forEach(f => allVerifiedFields.add(f));
+                        allOcrText.push(ocrText);
+                    }
+                    
+                    student.verifiedFields = Array.from(allVerifiedFields);
+                    student.ocrText = allOcrText;
+                    student.isAutoVerified = student.verifiedFields.length > 0;
+
+                    // Update history with verification results
+                    if (student.isAutoVerified) {
+                        student.history[student.history.length - 1].message += ` | [Auto-Verified: ${student.verifiedFields.join(', ')}]`;
+                        
+                        // Automatically approve if OCR finds matching data!
+                        student.status = 'Approved';
+                        student.approvalDate = Date.now();
+                        student.history.push({
+                            status: 'Approved',
+                            message: `System automatically approved application based on successful document OCR verification (${student.verifiedFields.join(', ')})`,
+                            updatedBy: 'System',
+                            timestamp: Date.now()
+                        });
+                    }
+                } else if (!student.proofUrl && (!student.proofUrls || student.proofUrls.length === 0)) {
+                    // Reset if no proof exists anyway
+                    student.isAutoVerified = false;
+                    student.verifiedFields = [];
+                    student.ocrText = [];
+                }
+
                 const updatedStudent = await student.save();
 
                 // Create notification for admin
+                const notificationMessage = student.isAutoVerified
+                    ? `Student ${student.name} (${student.registerNumber}) updated their profile. The changes were Automatically Verified and Approved by the system AI.`
+                    : `Student ${student.name} (${student.registerNumber}) has requested an ID card update/approval. Manual verification is needed.`;
+
                 await Notification.create({
                     userType: 'Admin',
                     recipient: 'admin',
-                    message: `Student ${student.name} (${student.registerNumber}) has requested an ID card update/approval.`
+                    message: notificationMessage
                 });
+
+                if (student.isAutoVerified) {
+                    await Notification.create({
+                        userType: 'Student',
+                        recipient: student.registerNumber,
+                        message: 'Great news! Your profile changes were automatically verified by our AI system and instantly approved!'
+                    });
+                }
 
                 res.json(updatedStudent);
             } catch (error) {

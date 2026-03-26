@@ -62,6 +62,9 @@ const studentSchema = mongoose.Schema({
     proofUrl: {
         type: String
     },
+    proofUrls: [{
+        type: String
+    }],
     emergencyContact: {
         type: String,
         match: [/^\+91[6-9]\d{9}$/, 'Student phone must start with +91 and be 10 digits starting with 6-9']
@@ -102,6 +105,16 @@ const studentSchema = mongoose.Schema({
     approvalDate: {
         type: Date
     },
+    isAutoVerified: {
+        type: Boolean,
+        default: false
+    },
+    verifiedFields: [{
+        type: String
+    }],
+    ocrText: [{
+        type: String
+    }],
     history: [
         {
             status: String,

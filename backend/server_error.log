@@ -889,3 +889,237 @@ Stack: Error: Invalid Register Number or Name
     at file:///C:/Users/HOME/student-ID-generator/backend/controllers/authController.js:92:15
     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
 
+[2026-03-26T16:27:39.958Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "1436",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryc15Az0jQWwFnMbce",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "Gan",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:279:72
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-26T16:33:06.539Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "326560",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryVFxarpNfWflVxE9H",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "Gugai, Salem",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:277:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-26T16:36:46.462Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "326609",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryRqmGQO9Xzd89yQrB",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "123, main street , sathy, erode district , tamilnadu - 638401",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:279:72
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-26T16:36:54.277Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "326609",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundary2kR20KGVeTB90GZp",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "123, main street , sathy, erode district , tamilnadu - 638401",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:279:72
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-26T16:37:45.942Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "326609",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundarypGW2rcZzqJKahyGM",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "123, main street , sathy, erode district , tamilnadu - 638401",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:279:72
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+[2026-03-26T16:38:07.157Z] PUT /api/students/profile - Status 500 - Error: proofFile is not defined
+Headers: {
+  "host": "localhost:5000",
+  "connection": "close",
+  "content-length": "326609",
+  "sec-ch-ua-platform": "\"Windows\"",
+  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YTY5YzgzMWE4ZGZkZWYxZTE3NTFmNSIsImlhdCI6MTc3NDU0MjQxNiwiZXhwIjoxNzc3MTM0NDE2fQ.2vVw0g1w4sT5bkHkMPpeyjrCX8Up2ignjwuqHNV2n9M",
+  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "accept": "application/json, text/plain, */*",
+  "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+  "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryA0K8Iye4n8g9EKqs",
+  "sec-ch-ua-mobile": "?0",
+  "origin": "http://localhost:5173",
+  "sec-fetch-site": "same-origin",
+  "sec-fetch-mode": "cors",
+  "sec-fetch-dest": "empty",
+  "referer": "http://localhost:5173/student-dashboard",
+  "accept-encoding": "gzip, deflate, br, zstd",
+  "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,ta;q=0.7"
+}
+Body: {
+  "name": "SNEHA T",
+  "registerNumber": "7376232CB150",
+  "department": "COMPUTER SCIENCE AND BUSINESS SYSTEMS",
+  "year": "III",
+  "dob": "2005-03-14",
+  "bloodGroup": "A-",
+  "gender": "",
+  "address": "123, main street , sathy, erode district , tamilnadu - 638401",
+  "emergencyContact": "+917845313454",
+  "parentPhone": "+918926243265",
+  "officialEmail": "sneha.cb23@bitsathy.ac.in",
+  "validUpto": "2023-2027",
+  "studentType": "Hosteller"
+}
+Stack: ReferenceError: proofFile is not defined
+    at file:///C:/Users/HOME/student-ID-generator/backend/controllers/studentController.js:279:72
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+

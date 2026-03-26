@@ -522,6 +522,11 @@ const AdminDashboard = () => {
                                                                     'bg-amber-600'}`}></span>
                                                     {student.status}
                                                 </span>
+                                                {student.isAutoVerified && (
+                                                    <div className="mt-1 flex items-center gap-1 text-[8px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                                                        <CheckCircle size={8} /> AUTO-VERIFIED
+                                                    </div>
+                                                )}
                                             </td>
                                             <td className="p-6 text-right">
                                                 <button
@@ -634,16 +639,104 @@ const AdminDashboard = () => {
                                         </span>
                                     </div>
 
-                                    {selectedStudent.proofUrl && (
-                                        <div className="pt-4 border-t border-gray-200 mt-2">
-                                            <a 
-                                                href={selectedStudent.proofUrl.startsWith('http') ? selectedStudent.proofUrl : `/${selectedStudent.proofUrl.replace(/\\/g, '/')}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
-                                            >
-                                                <Eye size={16} /> VIEW SUPPORTING PROOF
-                                            </a>
+                                    {selectedStudent.isAutoVerified ? (
+                                        <div className="bg-green-50/50 p-6 rounded-3xl border border-green-100 mt-4">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <div className="bg-green-600 p-1.5 rounded-lg text-white">
+                                                    <CheckCircle size={14} />
+                                                </div>
+                                                <h4 className="text-xs font-black text-green-900 uppercase tracking-widest">Automatically Verified Proof</h4>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] font-bold text-green-800 leading-relaxed uppercase">
+                                                    System verified the following changes from the document:
+                                                </p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {selectedStudent.verifiedFields && selectedStudent.verifiedFields.map((field, idx) => (
+                                                        <span key={idx} className="bg-white px-3 py-1 rounded-full text-[9px] font-black text-green-700 shadow-sm border border-green-200 uppercase tracking-wider">
+                                                            {field}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                                {selectedStudent.ocrText && Array.isArray(selectedStudent.ocrText) && selectedStudent.ocrText.length > 0 && (
+                                                    <div className="mt-4 pt-3 border-t border-green-200">
+                                                        <button 
+                                                            onClick={(e) => {
+                                                                e.target.nextSibling.classList.toggle('hidden');
+                                                            }}
+                                                            className="text-[9px] font-black text-green-600 hover:text-green-800 uppercase transition-all flex items-center gap-1"
+                                                        >
+                                                            <Eye size={10} /> Show Document Text
+                                                        </button>
+                                                        <div className="hidden mt-2 p-3 bg-white rounded-xl text-[9px] font-mono text-gray-400 max-h-32 overflow-y-auto whitespace-pre-wrap border border-gray-100">
+                                                            {selectedStudent.ocrText.join('\n\n---\n\n')}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ) : ((selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && (
+                                        <div className="bg-amber-50/50 p-6 rounded-3xl border border-amber-100 mt-4">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <div className="bg-amber-500 p-1.5 rounded-lg text-white">
+                                                    <Eye size={14} />
+                                                </div>
+                                                <h4 className="text-xs font-black text-amber-900 uppercase tracking-widest">Manual Verification Required</h4>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] font-bold text-amber-800 leading-relaxed uppercase">
+                                                    The system could not definitively match the student's text against the uploaded document. Please verify manually.
+                                                </p>
+                                                {selectedStudent.ocrText && Array.isArray(selectedStudent.ocrText) && selectedStudent.ocrText.length > 0 && (
+                                                    <div className="mt-4 pt-3 border-t border-amber-200">
+                                                        <button 
+                                                            onClick={(e) => {
+                                                                e.target.nextSibling.classList.toggle('hidden');
+                                                            }}
+                                                            className="text-[9px] font-black text-amber-600 hover:text-amber-800 uppercase transition-all flex items-center gap-1"
+                                                        >
+                                                            <FileSpreadsheet size={10} /> Show Text Found in Document
+                                                        </button>
+                                                        <div className="hidden mt-2 p-3 bg-white rounded-xl text-[9px] font-mono text-gray-400 max-h-32 overflow-y-auto whitespace-pre-wrap border border-gray-100">
+                                                            {selectedStudent.ocrText.join('\n\n---\n\n')}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                    {(selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && (
+                                        <div className="pt-4 border-t border-gray-200 mt-2 space-y-2">
+                                            <h4 className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Uploaded Proofs</h4>
+                                            {selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0 ? (
+                                                <div className="flex flex-col gap-2">
+                                                    {selectedStudent.proofUrls.map((url, idx) => (
+                                                        <a 
+                                                            key={idx}
+                                                            href={url.startsWith('http') ? url : `/${url.replace(/\\/g, '/')}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="w-full inline-flex items-center justify-between gap-2 px-6 py-3 bg-white border border-blue-100 hover:border-blue-300 text-blue-600 text-xs font-black rounded-2xl shadow-sm transition-all hover:shadow-md group"
+                                                        >
+                                                            <div className="flex items-center gap-2">
+                                                                <FileSpreadsheet size={16} />
+                                                                <span>DOCUMENT #{idx + 1}</span>
+                                                            </div>
+                                                            <Eye size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <a 
+                                                    href={selectedStudent.proofUrl.startsWith('http') ? selectedStudent.proofUrl : `/${selectedStudent.proofUrl.replace(/\\/g, '/')}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-2xl shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                                >
+                                                    <Eye size={16} /> VIEW SUPPORTING PROOF
+                                                </a>
+                                            )}
                                         </div>
                                     )}
                                 </div>

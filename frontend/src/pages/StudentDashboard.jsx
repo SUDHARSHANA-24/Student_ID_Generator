@@ -39,9 +39,14 @@ const StudentDashboard = () => {
     useEffect(() => {
         fetchProfile();
         // Poll for profile updates every 30 seconds (e.g., status changes)
-        const interval = setInterval(fetchProfile, 30000);
+        // Disable polling while student is editing to prevent form data from resetting
+        const interval = setInterval(() => {
+            if (!showEditForm) {
+                fetchProfile();
+            }
+        }, 30000);
         return () => clearInterval(interval);
-    }, []);
+    }, [showEditForm]);
 
     const downloadPDF = () => {
         const dashboardElement = document.querySelector('.max-w-4xl');
@@ -148,14 +153,37 @@ const StudentDashboard = () => {
                 <div className="lg:col-span-3 space-y-6">
                     {student.status === 'Pending' ? (
                         <div className="card p-12 text-center space-y-4 shadow-sm border-amber-100 bg-amber-50/20">
-                            <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+                            <div className="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center relative">
                                 <Clock className="w-8 h-8 text-amber-600 animate-pulse" />
+                                {student.isAutoVerified && (
+                                    <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 border-2 border-blue-500 shadow-sm animate-bounce">
+                                        <CheckCircle className="w-6 h-6 text-blue-500" />
+                                    </div>
+                                )}
                             </div>
                             <div>
                                 <h3 className="text-xl font-bold text-slate-800">Verification in Progress</h3>
+                                
+                                {student.isAutoVerified && (
+                                    <div className="bg-blue-50 border border-blue-100 p-4 rounded-xl mt-4 mb-4 text-left animate-fade-in inline-block max-w-md">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <CheckCircle className="w-4 h-4 text-blue-600" />
+                                            <h4 className="text-xs font-black text-blue-800 uppercase tracking-widest">Document Auto-Verified</h4>
+                                        </div>
+                                        <p className="text-[10px] font-bold text-blue-600 mb-2 uppercase">Your document matches the following fields:</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {student.verifiedFields && student.verifiedFields.map((field, idx) => (
+                                                <span key={idx} className="bg-white px-2 py-0.5 rounded-full text-[9px] font-black text-blue-700 border border-blue-100 uppercase">
+                                                    {field}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 <p className="text-gray-500 mt-2 max-w-md mx-auto">
                                     Your profile has been submitted and is currently under review by the administration.
-                                    Please check back later to download your digital ID.
+                                    {student.isAutoVerified ? ' Your documents have been automatically verified, which will speed up the approval process.' : ' Please check back later to download your digital ID.'}
                                 </p>
                             </div>
                         </div>

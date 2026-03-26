@@ -84,6 +84,11 @@ router.post('/login', authStudent);
 router.post('/signup', registerStudent);
 router.route('/profile')
     .get(protectStudent, getStudentProfile)
-    .put(protectStudent, upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'proof', maxCount: 1 }]), updateStudentProfile);
+    .put(protectStudent, upload.fields([
+        { name: 'photo', maxCount: 1 }, 
+        { name: 'aadhaarProof', maxCount: 1 }, 
+        { name: 'birthCertProof', maxCount: 1 }, 
+        { name: 'admissionProof', maxCount: 1 }
+    ]), updateStudentProfile);
 
 export default router;
