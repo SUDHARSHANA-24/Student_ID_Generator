@@ -241,9 +241,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                className={`input-field pl-10 ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                className="input-field pl-10"
                                 required
-                                readOnly={isStudentView}
                             />
                         </div>
                     </div>
@@ -256,9 +255,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 name="registerNumber"
                                 value={formData.registerNumber}
                                 onChange={handleInputChange}
-                                className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                className="input-field"
                                 required
-                                readOnly={isStudentView}
                             />
                         </div>
                         <div>
@@ -267,9 +265,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 name="department"
                                 value={formData.department}
                                 onChange={handleInputChange}
-                                className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                className="input-field"
                                 required
-                                disabled={isStudentView}
                             >
                                 <option value="">Select Department</option>
                                 <option value="COMPUTER SCIENCE ENGINEERING">COMPUTER SCIENCE ENGINEERING</option>
@@ -290,9 +287,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 name="year"
                                 value={formData.year}
                                 onChange={handleInputChange}
-                                className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                className="input-field"
                                 required
-                                disabled={isStudentView}
                             >
                                 <option value="">Select Year</option>
                                 <option value="I">I</option>
@@ -412,9 +408,8 @@ const StudentForm = ({ onSuccess, existingStudent, isStudentView }) => {
                                 name="officialEmail" 
                                 value={formData.officialEmail} 
                                 onChange={handleInputChange} 
-                                className={`input-field ${isStudentView ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                                className="input-field"
                                 required 
-                                readOnly={isStudentView}
                             />
                         </div>
                         <div>
