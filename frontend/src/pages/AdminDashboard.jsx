@@ -639,7 +639,7 @@ const AdminDashboard = () => {
                                         </span>
                                     </div>
 
-                                    {selectedStudent.isAutoVerified ? (
+                                    {selectedStudent.isAutoVerified && (
                                         <div className="bg-green-50/50 p-6 rounded-3xl border border-green-100 mt-4">
                                             <div className="flex items-center gap-2 mb-3">
                                                 <div className="bg-green-600 p-1.5 rounded-lg text-white">
@@ -675,7 +675,9 @@ const AdminDashboard = () => {
                                                 )}
                                             </div>
                                         </div>
-                                    ) : ((selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && (
+                                    )}
+
+                                    {!selectedStudent.isAutoVerified && (selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && selectedStudent.status.toLowerCase() === 'pending' && (
                                         <div className="bg-amber-50/50 p-6 rounded-3xl border border-amber-100 mt-4">
                                             <div className="flex items-center gap-2 mb-3">
                                                 <div className="bg-amber-500 p-1.5 rounded-lg text-white">
@@ -704,7 +706,38 @@ const AdminDashboard = () => {
                                                 )}
                                             </div>
                                         </div>
-                                    ))}
+                                    )}
+
+                                    {!selectedStudent.isAutoVerified && (selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && selectedStudent.status.toLowerCase() === 'rejected' && (
+                                        <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100 mt-4">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <div className="bg-red-500 p-1.5 rounded-lg text-white">
+                                                    <X size={14} />
+                                                </div>
+                                                <h4 className="text-xs font-black text-red-900 uppercase tracking-widest">Auto Verification Failed</h4>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <p className="text-[10px] font-bold text-red-800 leading-relaxed uppercase">
+                                                    The system automatically rejected the application because the uploaded document did not match the provided details.
+                                                </p>
+                                                {selectedStudent.ocrText && Array.isArray(selectedStudent.ocrText) && selectedStudent.ocrText.length > 0 && (
+                                                    <div className="mt-4 pt-3 border-t border-red-200">
+                                                        <button 
+                                                            onClick={(e) => {
+                                                                e.target.nextSibling.classList.toggle('hidden');
+                                                            }}
+                                                            className="text-[9px] font-black text-red-600 hover:text-red-800 uppercase transition-all flex items-center gap-1"
+                                                        >
+                                                            <FileSpreadsheet size={10} /> Show Text Found in Document
+                                                        </button>
+                                                        <div className="hidden mt-2 p-3 bg-white rounded-xl text-[9px] font-mono text-gray-400 max-h-32 overflow-y-auto whitespace-pre-wrap border border-gray-100">
+                                                            {selectedStudent.ocrText.join('\n\n---\n\n')}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {(selectedStudent.proofUrl || (selectedStudent.proofUrls && selectedStudent.proofUrls.length > 0)) && (
                                         <div className="pt-4 border-t border-gray-200 mt-2 space-y-2">
