@@ -322,7 +322,6 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
                     student.ocrText = allOcrText;
                     student.isAutoVerified = student.verifiedFields.length > 0;
 
-                    // Update history with verification results
                     if (student.isAutoVerified) {
                         student.history[student.history.length - 1].message += ` | [Auto-Verified: ${student.verifiedFields.join(', ')}]`;
                         
@@ -332,6 +331,16 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
                         student.history.push({
                             status: 'Approved',
                             message: `System automatically approved application based on successful document OCR verification (${student.verifiedFields.join(', ')})`,
+                            updatedBy: 'System',
+                            timestamp: Date.now()
+                        });
+                    } else {
+                        // Automatically reject if OCR finds NO matching data!
+                        student.status = 'Rejected';
+                        student.rejectionReason = 'The details you provided do not accurately match the uploaded proof documents. Please ensure your form details match the document exactly.';
+                        student.history.push({
+                            status: 'Rejected',
+                            message: 'System automatically rejected application because details did not match OCR verification of uploaded proof.',
                             updatedBy: 'System',
                             timestamp: Date.now()
                         });
@@ -348,7 +357,9 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
                 // Create notification for admin
                 const notificationMessage = student.isAutoVerified
                     ? `Student ${student.name} (${student.registerNumber}) updated their profile. The changes were Automatically Verified and Approved by the system AI.`
-                    : `Student ${student.name} (${student.registerNumber}) has requested an ID card update/approval. Manual verification is needed.`;
+                    : (uploadedProofs.length > 0 
+                        ? `Student ${student.name} (${student.registerNumber})'s update was Automatically Rejected by the system AI due to invalid proof.`
+                        : `Student ${student.name} (${student.registerNumber}) has requested an ID card update/approval. Manual verification is needed.`);
 
                 await Notification.create({
                     userType: 'Admin',
@@ -361,6 +372,12 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
                         userType: 'Student',
                         recipient: student.registerNumber,
                         message: 'Great news! Your profile changes were automatically verified by our AI system and instantly approved!'
+                    });
+                } else if (uploadedProofs.length > 0 && !student.isAutoVerified) {
+                    await Notification.create({
+                        userType: 'Student',
+                        recipient: student.registerNumber,
+                        message: 'Your profile changes were Automatically Rejected because the details did not match your uploaded documents. Please enter the correct details and try again.'
                     });
                 }
 
