@@ -190,19 +190,23 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
 
     if (student) {
         const changedFields = [];
+        const changedKeys = [];
         const transitions = [];
 
         if (req.body.name && req.body.name.toUpperCase() !== student.name) {
             student.name = req.body.name.toUpperCase();
             changedFields.push('Name');
+            changedKeys.push('name');
         }
         if (req.body.department && req.body.department.toUpperCase() !== student.department) {
             student.department = req.body.department.toUpperCase();
             changedFields.push('Department');
+            changedKeys.push('department');
         }
         if (req.body.dob && req.body.dob !== (student.dob ? student.dob.toISOString().split('T')[0] : '')) {
             student.dob = req.body.dob;
             changedFields.push('Date of Birth');
+            changedKeys.push('dob');
         }
         if (req.body.bloodGroup && req.body.bloodGroup !== student.bloodGroup) {
             student.bloodGroup = req.body.bloodGroup;
@@ -215,10 +219,12 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
         if (req.body.address && req.body.address !== student.address) {
             student.address = req.body.address;
             changedFields.push('Address');
+            changedKeys.push('address');
         }
         if (req.body.emergencyContact && req.body.emergencyContact !== student.emergencyContact) {
             student.emergencyContact = req.body.emergencyContact;
             changedFields.push('Emergency Contact');
+            changedKeys.push('mobile');
         }
         if (req.body.parentPhone && req.body.parentPhone !== student.parentPhone) {
             student.parentPhone = req.body.parentPhone;
@@ -248,6 +254,7 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
             transitions.push(`Student Type from ${student.studentType} to ${req.body.studentType}`);
             student.studentType = req.body.studentType;
             student.templateType = req.body.studentType === 'Hosteller' ? '3' : '4';
+            changedKeys.push('studentType');
         }
 
         // Handle File Uploads (Photo and Specific Proofs)
@@ -320,7 +327,17 @@ const updateStudentProfile = asyncHandler(async (req, res) => {
                     
                     student.verifiedFields = Array.from(allVerifiedFields);
                     student.ocrText = allOcrText;
-                    student.isAutoVerified = student.verifiedFields.length > 0;
+
+                    // Ensure ALL changed OCR-verifiable fields are matched successfully
+                    const monitoredFields = ['name', 'department', 'dob', 'address', 'mobile', 'studentType', 'registerNumber'];
+                    const requiredVerifications = changedKeys.filter(k => monitoredFields.includes(k));
+                    
+                    if (requiredVerifications.length > 0) {
+                        student.isAutoVerified = requiredVerifications.every(k => student.verifiedFields.includes(k));
+                    } else {
+                        // If they only changed things like Blood group/email, we don't auto-verify unless admin explicitly allows no-proof changes, but fallback is false to be safe.
+                        student.isAutoVerified = false; 
+                    }
 
                     if (student.isAutoVerified) {
                         student.history[student.history.length - 1].message += ` | [Auto-Verified: ${student.verifiedFields.join(', ')}]`;
