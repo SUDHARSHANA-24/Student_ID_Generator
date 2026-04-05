@@ -79,8 +79,10 @@ const VerificationPage = () => {
         // Normalize Windows backslashes and leading slashes for local upload paths
         const cleaned = url.replace(/^[\\/]+/, '').replace(/\\/g, '/');
 
-        // Ensure it is served from the uploads/static root
-        return `/${cleaned}`;
+        const baseUrl = import.meta.env.VITE_APP_API_URL || import.meta.env.VITE_APP_BASE_URL || '';
+        
+        // Ensure it is served from the uploads/static root with correct domain
+        return `${baseUrl}/${cleaned}`;
     })();
 
     // Debugging: log photo URL variants to help trace loading issues
