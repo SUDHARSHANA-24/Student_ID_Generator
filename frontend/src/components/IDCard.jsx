@@ -23,8 +23,9 @@ const IDCard = ({ student, printable = false }) => {
         status
     } = student;
 
-    // allow overriding origin in production via environment variable
-    const baseUrl = import.meta.env.VITE_APP_BASE_URL || window.location.origin;
+    // allow overriding origin in production via environment variable and remove trailing slashes
+    const rawBaseUrl = import.meta.env.VITE_APP_BASE_URL || window.location.origin;
+    const baseUrl = rawBaseUrl.replace(/\/+$/, '');
     const verificationUrl = `${baseUrl}/verify/${registerNumber}`;
     const qrData = verificationUrl;
     console.debug('IDCard qrData', qrData);
