@@ -36,9 +36,13 @@ const IDCard = ({ student, printable = false }) => {
         if (url.startsWith('http')) return url;
         
         // Clean up leading slashes and handle both forward and back slashes
-        const cleanPath = url.replace(/^[\\/]+/, '').replace(/\\/g, '/');
+        let cleanPath = url.replace(/^[\\/]+/, '').replace(/\\/g, '/');
         
-        // If it already starts with 'uploads/', don't double it
+        // Ensure it points to the uploads directory if it's just a filename
+        if (!cleanPath.startsWith('uploads/')) {
+            cleanPath = `uploads/${cleanPath}`;
+        }
+        
         return `/${cleanPath}`;
     };
 

@@ -550,9 +550,9 @@ const bulkCreateStudents = asyncHandler(async (req, res) => {
                 else if (g.startsWith('f')) gender = 'Female';
             }
 
-            // Clean up photoUrl if it's a local Windows path
-            if (photoUrl && photoUrl !== "" && (photoUrl.includes('\\') || photoUrl.includes(':'))) {
-                const parts = photoUrl.split(/[\\\/]/);
+            // Handle photoUrl: extract filename if it's a local path or just a filename
+            if (photoUrl && photoUrl !== "" && photoUrl !== "N/A" && !photoUrl.startsWith('http')) {
+                const parts = String(photoUrl).split(/[\\\/]/);
                 const filename = parts[parts.length - 1];
                 if (filename && filename !== "") {
                     photoUrl = `uploads\\${filename}`;
